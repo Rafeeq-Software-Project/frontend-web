@@ -1,1 +1,216 @@
-/* You can add global styles to this file, and also import other style files */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    overflow-x: hidden;
+    background-color: #f8faff;
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Global scrollbar removal */
+* {
+    scrollbar-width: none;
+    /* Firefox */
+    -ms-overflow-style: none;
+    /* IE and Edge */
+}
+
+*::-webkit-scrollbar {
+    display: none;
+    /* Chrome, Safari and Opera */
+}
+
+body {
+    font-family: "Cairo", sans-serif;
+    overflow: visible;
+}
+
+
+:root {
+    /* Blue Colors */
+    --blue-light: #eef5fd;
+    --blue-light-hover: #e5f0fc;
+    --blue-light-active: #c9e1f8;
+    --blue-normal: #529eea;
+    --blue-normal-hover: #4a8ed3;
+    --blue-normal-active: #427ebb;
+    --blue-dark: #3e77b0;
+    --blue-dark-hover: #315f8c;
+    --blue-dark-active: #254769;
+    --blue-darker: #1d3752;
+
+    /* Grey Colors */
+    --grey-light: #f1f1f1;
+    --grey-light-hover: #eaeaea;
+    --grey-light-active: #d3d3d3;
+    --grey-normal: #727272;
+    --grey-normal-hover: #676767;
+    --grey-normal-active: #5b5b5b;
+    --grey-dark: #565656;
+    --grey-dark-hover: #444444;
+    --grey-dark-active: #333333;
+    --grey-darker: #282828;
+
+    /* Miscellaneous Colors */
+    --color-black: #000000;
+    --color-background: #F6F7F8;
+    --color-green: #009F2D;
+    --color-light-mint: #F0FDF4;
+    --color-orange: #F6A72B;
+    --color-cream: #FFFBEB;
+    --color-magenta: #DD1B7E;
+    --color-pale-pink: #FDF3F9;
+    --color-violet: #6143D2;
+    --color-light-lavender: #E8DFF6;
+
+    /* Dashboard neutrals & accents (founder dashboard) */
+    --dash-bg: #f9fafb;
+    --dash-surface: #ffffff;
+    --dash-surface-soft: #f3f4f6;
+    --dash-surface-alt: #fafafa;
+    --dash-border-subtle: #e5e7eb;
+    --dash-border-strong: #d1d5db;
+
+    --dash-text-strong: #111827;
+    --dash-text-main: #1f2937;
+    --dash-text-secondary: #374151;
+    --dash-text-muted: #6b7280;
+    --dash-text-soft: #9ca3af;
+    --dash-icon-dark: #4b5563;
+
+    --dash-primary-soft: #dbeafe;
+    --dash-purple-soft: #ede9fe;
+    --dash-warning-bg: #fef3c7;
+    --dash-error-bg: #fee2e2;
+
+    --dash-gold: #f59e0b;
+    --dash-gold-dark: #d97706;
+    --dash-yellow: #eab308;
+    --dash-green: #22c55e;
+    --dash-green-strong: #059669;
+    --dash-green-light: #d1fae5;
+    --dash-purple-1: #a78bfa;
+    --dash-purple-2: #7c3aed;
+    --dash-mint-1: #34d399;
+
+    --transition-speed: 0.3s;
+}
+
+body.dark-mode {
+    --color-background: #121212;
+    --color-black: #ffffff;
+
+    /* Dashboard Dark Mode */
+    --dash-bg: #121212;
+    --dash-surface: #1e1e1e;
+    --dash-surface-soft: #2d2d2d;
+    --dash-surface-alt: #242424;
+    --dash-border-subtle: #333333;
+    --dash-border-strong: #444444;
+
+    --dash-text-strong: #f3f4f6;
+    --dash-text-main: #e5e7eb;
+    --dash-text-secondary: #d1d5db;
+    --dash-text-muted: #9ca3af;
+    --dash-text-soft: #6b7280;
+    --dash-icon-dark: #9ca3af;
+
+    --dash-primary-soft: #1e3a8a;
+    --dash-purple-soft: #4c1d95;
+    --dash-warning-bg: #78350f;
+    --dash-error-bg: #7f1d1d;
+
+    /* Blue Colors Adjustments for Dark Mode */
+    --blue-light: #1e3a8a;
+    --blue-light-hover: #1e40af;
+    --blue-light-active: #1d4ed8;
+    --blue-dark: #529eea;
+    --blue-darker: #eef5fd;
+
+    /* Grey Colors Adjustments for Dark Mode */
+    --grey-light: #282828;
+    --grey-light-hover: #333333;
+    --grey-darker: #f1f1f1;
+}
+
+body {
+    transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
+    background-color: var(--color-background);
+    color: var(--color-black);
+}
+
+.dashboard-wrapper {
+    background-color: var(--dash-bg);
+    color: var(--dash-text-main);
+}
+
+/* Global Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+.animate-fade-in-up {
+    animation: fadeInUp 0.6s ease forwards;
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.8s ease forwards;
+}
+
+.animate-scale-in {
+    animation: scaleIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-float {
+    animation: float 4s ease-in-out infinite;
+}

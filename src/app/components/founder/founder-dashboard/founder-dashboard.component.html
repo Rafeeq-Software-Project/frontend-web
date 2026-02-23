@@ -1,0 +1,259 @@
+<div class="dashboard-wrapper" [class.menu-open]="isMobileMenuOpen">
+  <!-- Left Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="logo-circle">
+        <span class="logo-r">R</span>
+      </div>
+      <div class="brand">
+        <h1 class="brand-name">Rafeeq</h1>
+        <span class="brand-tagline">Founder Plateform</span>
+      </div>
+      <button type="button" class="sidebar-close" aria-label="Close menu" (click)="closeMobileMenu()"></button>
+    </div>
+    <nav class="sidebar-nav">
+      <a class="nav-item" [class.active]="currentView === 'dashboard'" href="#" (click)="setView('dashboard', $event)">
+        <i class="fa-solid fa-chart-line"></i> <span>Dashboard</span>
+      </a>
+      <a class="nav-item" [class.active]="currentView === 'projects'" href="#" (click)="setView('projects', $event)">
+        <i class="fa-solid fa-rocket"></i> <span>My Projects</span>
+      </a>
+
+      <a class="nav-item" [class.active]="currentView === 'messages'" href="#" (click)="setView('messages', $event)">
+        <i class="fa-brands fa-weixin"></i> <span>Messages</span>
+        <span class="badge">2</span>
+      </a>
+
+      <a class="nav-item" href="#" (click)="onNavClick($event)">
+        <i class="fa-solid fa-gears"></i> <span>Settings</span>
+      </a>
+    </nav>
+    <a class="nav-item logout" href="#" (click)="onNavClick($event)">
+      <i class="fa-solid fa-arrow-right-from-bracket"></i> <span>Log out</span>
+    </a>
+  </aside>
+
+  <div class="mobile-overlay" [class.visible]="isMobileMenuOpen" (click)="closeMobileMenu()" aria-hidden="true"></div>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- Mobile Header -->
+    <header class="mobile-header">
+      <button type="button" class="mobile-menu-btn" aria-label="Open menu" (click)="openMobileMenu()"></button>
+      <div class="mobile-title">{{ currentView === 'dashboard' ? 'Dashboard' : 'My Projects' }}</div>
+      <div class="mobile-actions">
+        <button type="button" class="icon-btn theme-toggle" (click)="toggleTheme()"
+          [attr.aria-label]="(isDarkMode$ | async) ? 'Switch to light mode' : 'Switch to dark mode'">
+          <i [class]="(isDarkMode$ | async) ? 'fa-solid fa-sun' : 'fa-solid fa-moon'"></i>
+        </button>
+        <button type="button" class="icon-btn" aria-label="Search">
+          <i class="fa-brands fa-sistrix"></i> </button>
+        <button type="button" class="icon-btn" aria-label="Quick actions">
+          <i class="fa-regular fa-circle-question"></i> </button>
+        <button type="button" class="icon-btn" aria-label="Notifications">
+          <i class="fa-regular fa-bell"></i> </button>
+      </div>
+    </header>
+
+    <!-- Top Header -->
+    <header class="top-header">
+      <div class="search-bar">
+        <i class="fa-brands fa-sistrix"></i>
+        <input type="text" placeholder="Search projects, investors..." />
+      </div>
+      <div class="header-actions">
+        <button type="button" class="icon-btn theme-toggle" (click)="toggleTheme()"
+          [attr.aria-label]="(isDarkMode$ | async) ? 'Switch to light mode' : 'Switch to dark mode'">
+          <i [class]="(isDarkMode$ | async) ? 'fa-solid fa-sun' : 'fa-solid fa-moon'"></i>
+        </button>
+        <button type="button" class="icon-btn" aria-label="Notifications">
+          <i class="fa-regular fa-bell"></i> </button>
+        <button type="button" class="icon-btn" aria-label="Help">
+          <i class="fa-regular fa-circle-question"></i> </button>
+        <div class="user-info">
+          <div class="user-details">
+            <span class="user-name">Alex</span>
+            <span class="user-role">Tech Founder</span>
+          </div>
+          <div class="user-avatar"></div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Dashboard Content -->
+    <div class="dashboard-body" [class.no-padding]="currentView === 'messages'">
+
+      <!-- Main Dashboard View -->
+      <ng-container *ngIf="currentView === 'dashboard'">
+        <div class="dashboard-header animate-slide-up">
+          <div>
+            <h2 class="dashboard-title">Dashboard</h2>
+            <p class="dashboard-subtitle">Overview of your startup activity & performance</p>
+          </div>
+          <div class="dashboard-actions">
+            <button type="button" class="btn-outline">
+              <i class="fa-solid fa-download"></i> Export
+            </button>
+            <button type="button" class="btn-primary">
+              <i class="fa-solid fa-plus"></i> New Project
+            </button>
+          </div>
+        </div>
+
+        <!-- Summary Cards -->
+        <div class="summary-cards">
+          <div class="summary-card" style="animation-delay: 0.1s">
+            <div class="card-icon-wrap">
+              <i class="fa-solid fa-rocket"></i>
+            </div>
+            <span class="card-badge card-badge-green">+12%</span>
+            <span class="card-value">3</span>
+            <span class="card-label">Active Projects</span>
+          </div>
+          <div class="summary-card" style="animation-delay: 0.2s">
+            <div class="card-icon-wrap">
+              <i class="fa-solid fa-handshake"></i>
+            </div>
+            <span class="card-badge card-badge-green">+4</span>
+            <span class="card-value">12</span>
+            <span class="card-label">Investors Connected</span>
+          </div>
+          <div class="summary-card" style="animation-delay: 0.3s">
+            <div class="card-icon-wrap">
+              <i class="fa-solid fa-clock-rotate-left"></i>
+            </div>
+            <span class="card-value">5</span>
+            <span class="card-label">Pending Reviews</span>
+          </div>
+          <div class="summary-card" style="animation-delay: 0.4s">
+            <div class="card-icon-wrap">
+              <i class="fa-solid fa-message"></i>
+            </div>
+            <span class="card-badge card-badge-now">Just Now</span>
+            <span class="card-value">2</span>
+            <span class="card-label">Unread Messages</span>
+          </div>
+        </div>
+
+        <!-- Two-column layout -->
+        <div class="dashboard-grid">
+          <div class="dashboard-main">
+            <!-- Recent Projects -->
+            <section class="recent-projects animate-slide-up" style="animation-delay: 0.5s">
+              <div class="section-header">
+                <h3 class="section-title">Recent Activity</h3>
+                <a class="view-all" href="#" (click)="setView('projects', $event)">
+                  View All Projects <i class="fa-solid fa-arrow-right"></i>
+                </a>
+              </div>
+
+              <div class="projects-table-wrap">
+                <table class="projects-table">
+                  <thead>
+                    <tr>
+                      <th>PROJECT NAME</th>
+                      <th>CATEGORY</th>
+                      <th>FUNDING NEEDED</th>
+                      <th>STATUS</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <img src="assets/Icon_2_39.svg" alt=""> EcoPack Solutions
+                      </td>
+                      <td>Sustainability</td>
+                      <td>$50.000</td>
+                      <td><span class="status-dot status-yellow"></span> Under Review</td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <img src="assets/Frame 179 (1).svg" alt=""> Health Track AI
+                      </td>
+                      <td>HealthTech</td>
+                      <td>$120.000</td>
+                      <td><span class="status-dot status-green"></span> Open</td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <img src="assets/Icon_2_49.svg" alt=""> Urban Gardens
+                      </td>
+                      <td>Community</td>
+                      <td>$15.000</td>
+                      <td><span class="status-dot status-blue"></span> Founded</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </section>
+
+            <!-- No Drafts -->
+            <section class="no-drafts">
+              <img src="assets/Frame 199.svg" alt="">
+              <h4 class="no-drafts-title">No Drafts Found</h4>
+              <p class="no-drafts-text">You don't have any drafts at this moment</p>
+            </section>
+          </div>
+
+          <div class="dashboard-sidebar">
+            <!-- Start New Project Card -->
+            <div class="side-card side-card-cta">
+              <span class="cta-plus"></span>
+              <h4 class="side-card-title">Start a New Project</h4>
+              <p class="side-card-text">Ready to scale? Launch a new project to attract investors and grow your</p>
+              <button type="button" class="btn-cta">Create Project</button>
+            </div>
+
+            <!-- Your Network -->
+            <div class="side-card">
+              <div class="side-card-header">
+                <h4 class="side-card-title">Your Network</h4>
+                <button type="button" class="menu-dots" aria-label="Menu"></button>
+              </div>
+              <div class="network-list">
+                <div class="network-item">
+                  <div class="network-avatar network-avatar-1"></div>
+                  <div class="network-details">
+                    <span class="network-name">Sarah Connor</span>
+                    <span class="network-role">Angel Investor...</span>
+                  </div>
+                  <button type="button" class="btn-message">Message</button>
+                </div>
+                <div class="network-item">
+                  <div class="network-avatar network-avatar-2"></div>
+                  <div class="network-details">
+                    <span class="network-name">Michael Chen</span>
+                    <span class="network-role">Mentor Strategy</span>
+                  </div>
+                  <button type="button" class="btn-message">Message</button>
+                </div>
+              </div>
+              <a class="view-connections" href="#">View all connections</a>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+
+      <!-- Projects View -->
+      <ng-container *ngIf="currentView === 'projects'">
+        <div class="dashboard-header">
+          <div>
+            <h2 class="dashboard-title">My Projects</h2>
+            <p class="dashboard-subtitle">Manage and track your ongoing projects</p>
+          </div>
+          <div class="dashboard-actions">
+            <button type="button" class="btn-primary">+ New Project</button>
+          </div>
+        </div>
+        <app-my-project></app-my-project>
+      </ng-container>
+
+      <!-- Messages View -->
+      <ng-container *ngIf="currentView === 'messages'">
+
+        <app-chat></app-chat>
+      </ng-container>
+
+    </div>
+  </main>
+</div>

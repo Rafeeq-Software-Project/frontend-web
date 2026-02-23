@@ -1,0 +1,297 @@
+:host {
+    --primary: #3b82f6;
+    --accent: #10b981;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+    --text-muted: #64748b;
+    --glass: rgba(255, 255, 255, 0.7);
+    --glass-border: rgba(255, 255, 255, 0.5);
+    --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+:host-context(.dark-mode) {
+    --glass: rgba(15, 23, 42, 0.6);
+    --glass-border: rgba(255, 255, 255, 0.05);
+}
+
+.projects-container {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.grid-layout {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 30px;
+    padding: 10px 0;
+}
+
+.project-card {
+    background: var(--glass);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+    overflow: hidden;
+    transition: var(--transition);
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05);
+    height: 100%;
+}
+
+.project-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.1);
+    border-color: var(--primary);
+}
+
+/* Card Header */
+.card-header {
+    height: 140px;
+    position: relative;
+    padding: 20px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+    background-size: cover;
+    background-position: center;
+}
+
+.card-header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.4) 100%);
+}
+
+.status-badge {
+    position: relative;
+    z-index: 1;
+    padding: 6px 14px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    backdrop-filter: blur(8px);
+    color: white;
+}
+
+.status-badge.open {
+    background: rgba(16, 185, 129, 0.8);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.status-badge.founded {
+    background: rgba(59, 130, 246, 0.8);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.status-badge.review {
+    background: rgba(245, 158, 11, 0.8);
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+}
+
+.status-badge.draft {
+    background: rgba(100, 116, 139, 0.8);
+    box-shadow: 0 4px 12px rgba(100, 116, 139, 0.3);
+}
+
+/* Card Body */
+.card-body {
+    padding: 25px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.card-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.category-tag {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 8px;
+    text-transform: uppercase;
+    background: rgba(59, 130, 246, 0.1);
+    color: var(--primary);
+}
+
+.menu-btn {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 5px;
+    transition: var(--transition);
+}
+
+.menu-btn:hover {
+    color: var(--primary);
+}
+
+.project-title {
+    font-size: 20px;
+    font-weight: 800;
+    margin: 0 0 10px 0;
+    letter-spacing: -0.5px;
+}
+
+.project-description {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin: 0 0 25px 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+
+/* Progress Section */
+.progress-section {
+    margin-top: auto;
+}
+
+.financials {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 10px;
+}
+
+.label {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.amount {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+}
+
+.raised-amount {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--primary);
+}
+
+.goal-amount {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+}
+
+.percentage {
+    font-size: 16px;
+    font-weight: 800;
+}
+
+.progress-bar-bg {
+    height: 8px;
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+:host-context(.dark-mode) .progress-bar-bg {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.progress-bar-fill {
+    height: 100%;
+    border-radius: 10px;
+    transition: width 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.progress-bar-fill.open {
+    background: linear-gradient(90deg, var(--accent), #34d399);
+}
+
+.progress-bar-fill.founded {
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+}
+
+.progress-bar-fill.review {
+    background: linear-gradient(90deg, var(--warning), #fbbf24);
+}
+
+/* New Project Card */
+.new-project-card {
+    border: 2px dashed var(--glass-border);
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 40px;
+    background: transparent;
+    cursor: pointer;
+}
+
+.new-project-card:hover {
+    border-color: var(--primary);
+    background: rgba(59, 130, 246, 0.02);
+}
+
+.plus-icon {
+    width: 60px;
+    height: 60px;
+    background: rgba(59, 130, 246, 0.1);
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    transition: var(--transition);
+}
+
+.new-project-card:hover .plus-icon {
+    transform: rotate(90deg) scale(1.1);
+    background: var(--primary);
+}
+
+.new-project-card:hover .plus-icon path {
+    stroke: white;
+}
+
+.new-project-card h3 {
+    font-size: 18px;
+    font-weight: 800;
+    margin: 0 0 10px 0;
+}
+
+.new-project-card p {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin: 0;
+}
+
+@media (max-width: 640px) {
+    .grid-layout {
+        grid-template-columns: 1fr;
+    }
+}

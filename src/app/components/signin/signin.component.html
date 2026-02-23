@@ -1,0 +1,182 @@
+<div class="auth-wrapper">
+    <!-- Left Sidebar Section -->
+    <div class="auth-sidebar">
+        <div class="sidebar-header">
+            <div routerLink="/" class="brand">
+                <div class="logo-box">
+                    <i class="fas fa-check-shield"></i>
+                </div>
+                <span>Rafeeq</span>
+            </div>
+        </div>
+
+        <div class="sidebar-main">
+            <h1 class="hero-title">Fuel your startup <br>journey.</h1>
+            <p class="hero-subtitle">
+                Rafeeq connects ambitious founders with strategic investors to build the next generation of
+                world-changing startups.
+            </p>
+        </div>
+
+        <div class="sidebar-footer">
+            <div class="verified-badge">
+                <i class="fas fa-users-crown"></i>
+                <span> Founder & Investor Hub <i class="fa-solid fa-handshake-angle"></i></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right Form Section -->
+    <div class="auth-content">
+        <div class="form-container">
+            <div class="form-header">
+                <h2 class="title">Join Rafeeq</h2>
+                <p class="subtitle">Connect with founders , investors and change-makers.</p>
+            </div>
+
+            <!-- Messages -->
+            <div *ngIf="successMessage" class="alert alert-success animate-fade-in">
+                <i class="fas fa-check-circle"></i> {{ successMessage }}
+            </div>
+            <div *ngIf="errorMessage" class="alert alert-danger animate-fade-in">
+                <i class="fas fa-exclamation-circle"></i> {{ errorMessage }}
+            </div>
+
+            <form [formGroup]="signUpForm" (ngSubmit)="onSubmit()" class="registration-form">
+                <!-- Row 1: First Name & Last Name -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>First Name</label>
+                        <div class="input-container"
+                            [class.error]="signUpForm.get('firstName')?.invalid && signUpForm.get('firstName')?.touched">
+                            <i class="fas fa-user"></i>
+                            <input type="text" formControlName="firstName" placeholder="Enter your first name">
+                        </div>
+                        <div class="error-msg"
+                            *ngIf="signUpForm.get('firstName')?.invalid && signUpForm.get('firstName')?.touched">
+                            <span *ngIf="signUpForm.get('firstName')?.errors?.['required']">First name is
+                                required.</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Last Name</label>
+                        <div class="input-container"
+                            [class.error]="signUpForm.get('lastName')?.invalid && signUpForm.get('lastName')?.touched">
+                            <i class="fas fa-user"></i>
+                            <input type="text" formControlName="lastName" placeholder="Enter your last name">
+                        </div>
+                        <div class="error-msg"
+                            *ngIf="signUpForm.get('lastName')?.invalid && signUpForm.get('lastName')?.touched">
+                            <span *ngIf="signUpForm.get('lastName')?.errors?.['required']">Last name is required.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Row 2: Username & Email -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Username</label>
+                        <div class="input-container"
+                            [class.error]="signUpForm.get('username')?.invalid && signUpForm.get('username')?.touched">
+                            <i class="fas fa-at"></i>
+                            <input type="text" formControlName="username" placeholder="Enter your username">
+                        </div>
+                        <div class="error-msg"
+                            *ngIf="signUpForm.get('username')?.invalid && signUpForm.get('username')?.touched">
+                            <span *ngIf="signUpForm.get('username')?.errors?.['required']">Username is required.</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <div class="input-container"
+                            [class.error]="signUpForm.get('email')?.invalid && signUpForm.get('email')?.touched">
+                            <i class="fas fa-envelope"></i>
+                            <input type="email" formControlName="email" placeholder="Enter your email address">
+                        </div>
+                        <div class="error-msg"
+                            *ngIf="signUpForm.get('email')?.invalid && signUpForm.get('email')?.touched">
+                            <span *ngIf="signUpForm.get('email')?.errors?.['required']">Email is required.</span>
+                            <span *ngIf="signUpForm.get('email')?.errors?.['email']">Please enter a valid email.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Row 3: Password -->
+                <div class="form-group full-width">
+                    <label>Password</label>
+                    <div class="input-container"
+                        [class.error]="signUpForm.get('password')?.invalid && signUpForm.get('password')?.touched">
+                        <i class="fas fa-lock"></i>
+                        <input [type]="showPassword ? 'text' : 'password'" formControlName="password"
+                            placeholder="Enter your password">
+                        <button type="button" class="password-toggle" (click)="togglePasswordVisibility()">
+                            <i class="fas" [class.fa-eye]="!showPassword" [class.fa-eye-slash]="showPassword"></i>
+                        </button>
+                    </div>
+                    <div class="error-msg"
+                        *ngIf="signUpForm.get('password')?.invalid && signUpForm.get('password')?.touched">
+                        <span *ngIf="signUpForm.get('password')?.errors?.['required']">Password is required.</span>
+                        <span *ngIf="signUpForm.get('password')?.errors?.['minlength']">Password must be at least 6
+                            characters.</span>
+                    </div>
+                </div>
+
+                <!-- Role Selection Section -->
+                <div class="role-selection-area">
+                    <h3 class="section-title">I am joining as a...</h3>
+                    <div class="role-grid">
+                        <label class="role-card" [class.selected]="signUpForm.get('roleId')?.value == 2">
+                            <input type="radio" formControlName="roleId" [value]="2" class="hidden-radio">
+                            <div class="role-icon">
+                                <i class="fas fa-hands-holding-child"></i>
+                            </div>
+                            <div class="role-info">
+                                <h4>Founder</h4>
+                                <p>I have an idea or a project</p>
+                            </div>
+                            <div class="role-check">
+                                <i class="fas fa-circle-check"></i>
+                            </div>
+                        </label>
+
+                        <label class="role-card" [class.selected]="signUpForm.get('roleId')?.value == 3">
+                            <input type="radio" formControlName="roleId" [value]="3" class="hidden-radio">
+                            <div class="role-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="role-info">
+                                <h4>Investor</h4>
+                                <p>I want to support great ideas</p>
+                            </div>
+                            <div class="role-check">
+                                <i class="fas fa-circle-check"></i>
+                            </div>
+                        </label>
+                    </div>
+                    <div class="error-msg"
+                        *ngIf="signUpForm.get('roleId')?.invalid && signUpForm.get('roleId')?.touched">
+                        Please select your role.
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="submit-btn" [disabled]="signUpForm.invalid || isLoading">
+                    <span *ngIf="!isLoading">Create Account <i class="fas fa-arrow-right"></i></span>
+                    <span *ngIf="isLoading"><i class="fas fa-circle-notch fa-spin"></i> Processing...</span>
+                </button>
+
+                <!-- Footer Info -->
+                <div class="form-footer">
+                    <p class="security-text">
+                        <i class="fas fa-shield-alt"></i> Your data is safe and encrypted. By signing up, you agree to
+                        our Terms and Privacy Policy.
+                    </p>
+                    <p class="login-link">
+                        Already have an account? <a routerLink="/login">Log in</a>
+                    </p>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>

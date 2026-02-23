@@ -1,0 +1,72 @@
+<div class="projects-container">
+    <div class="grid-layout">
+        <div *ngFor="let project of projects" class="project-card" [ngClass]="{'new-project-card': project.isNew}">
+
+            <!-- Standard Project Card Content -->
+            <ng-container *ngIf="!project.isNew">
+                <!-- Card Header / Banner -->
+                <div class="card-header" [ngClass]="project.headerClass">
+                    <span class="status-badge" [ngClass]="project.status">{{ project.statusLabel }}</span>
+                    <div *ngIf="project.status === 'draft'" class="placeholder-icon">
+                        <!-- Placeholder Icon for Draft -->
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                opacity="0.5" />
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Card Body -->
+                <div class="card-body">
+                    <div class="card-meta">
+                        <span class="category-tag" [ngClass]="project.categoryClass">{{ project.category }}</span>
+                        <button class="menu-btn">
+                            <svg width="4" height="16" viewBox="0 0 4 16" fill="currentColor">
+                                <circle cx="2" cy="2" r="2" />
+                                <circle cx="2" cy="8" r="2" />
+                                <circle cx="2" cy="14" r="2" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    <h3 class="project-title">{{ project.title }}</h3>
+                    <p class="project-description">{{ project.description }}</p>
+
+                    <!-- Progress Section -->
+                    <div class="progress-section">
+                        <div class="financials">
+                            <div>
+                                <span class="label">RAISED</span>
+                                <div class="amount">
+                                    <span class="raised-amount">${{ project.raised | number:'1.0-0' }}</span>
+                                    <span class="goal-amount"> /${{ project.goal | number:'1.0-2' }}k</span>
+                                </div>
+                            </div>
+                            <div class="percentage">{{ project.progress }}%</div>
+                        </div>
+
+                        <div class="progress-bar-bg">
+                            <div class="progress-bar-fill" [style.width.%]="project.progress"
+                                [ngClass]="project.status"></div>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+
+            <!-- "New Project" Card Content -->
+            <ng-container *ngIf="project.isNew">
+                <div class="new-project-content">
+                    <div class="plus-icon">
+                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20 0V40M0 20H40" stroke="#3B82F6" stroke-width="4" />
+                        </svg>
+                    </div>
+                    <h3>New Project</h3>
+                    <p>{{ project.description }}</p>
+                </div>
+            </ng-container>
+
+        </div>
+    </div>
+</div>

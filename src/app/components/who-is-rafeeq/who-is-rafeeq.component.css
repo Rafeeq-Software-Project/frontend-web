@@ -1,0 +1,419 @@
+:host {
+  --primary-color: #3b82f6;
+  --secondary-color: #2563eb;
+  --accent-color: #60a5fa;
+  --bg-gradient: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  --card-bg: rgba(255, 255, 255, 0.9);
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+  --glass-border: rgba(255, 255, 255, 0.5);
+  --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 20px 25px -15px rgba(0, 0, 0, 0.1), 0 10px 10px -10px rgba(0, 0, 0, 0.04);
+  --card-glow: rgba(59, 130, 246, 0.15);
+}
+
+:host-context(.dark-mode) {
+  --bg-gradient: linear-gradient(135deg, #0f172a 0%, #020617 100%);
+  --card-bg: rgba(30, 41, 59, 0.8);
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --glass-border: rgba(255, 255, 255, 0.05);
+  --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+  --card-glow: rgba(59, 130, 246, 0.3);
+}
+
+.who-is-rafeeq-section {
+  position: relative;
+  min-height: 100vh;
+  background: var(--bg-gradient);
+  padding: 120px 5%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  transition: background 0.5s ease;
+}
+
+/* Base Styles */
+.grid-overlay {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(59, 130, 246, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(59, 130, 246, 0.05) 1px, transparent 1px);
+  background-size: 50px 50px;
+  mask-image: radial-gradient(circle at center, black, transparent 80%);
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Floating Blobs */
+.bg-blob {
+  position: absolute;
+  filter: blur(100px);
+  z-index: 0;
+  opacity: 0.3;
+  animation: float-around 25s infinite alternate ease-in-out;
+  border-radius: 50%;
+}
+
+.blob-1 {
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, #3b82f6, #2563eb);
+  top: -200px;
+  right: -100px;
+}
+
+.blob-2 {
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, #60a5fa, #3b82f6);
+  bottom: -150px;
+  left: -100px;
+  animation-duration: 30s;
+  animation-delay: -5s;
+}
+
+.blob-3 {
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, #3b82f6, transparent);
+  top: 30%;
+  left: 20%;
+  animation-duration: 20s;
+  animation-delay: -10s;
+}
+
+@keyframes float-around {
+  0% {
+    transform: translate(0, 0) rotate(0deg) scale(1);
+  }
+
+  33% {
+    transform: translate(100px, 50px) rotate(120deg) scale(1.1);
+  }
+
+  66% {
+    transform: translate(-50px, 100px) rotate(240deg) scale(0.9);
+  }
+
+  100% {
+    transform: translate(0, 0) rotate(360deg) scale(1);
+  }
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+  width: 100%;
+}
+
+/* Header Styling */
+.header-content {
+  text-align: center;
+  margin-bottom: 100px;
+  animation: slideDownIn 1s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.text-gradient {
+  background: linear-gradient(to right, #3b82f6, #60a5fa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.role-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(59, 130, 246, 0.1);
+  color: #3b82f6;
+  padding: 10px 24px;
+  border-radius: 100px;
+  font-size: 0.9rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 30px;
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  box-shadow: 0 5px 15px rgba(59, 130, 246, 0.1);
+}
+
+.section-title {
+  font-size: clamp(3rem, 6vw, 4.5rem);
+  font-weight: 900;
+  color: var(--text-main);
+  margin-bottom: 24px;
+  letter-spacing: -2px;
+  line-height: 1;
+}
+
+.section-subtitle {
+  font-size: 1.35rem;
+  color: var(--text-muted);
+  max-width: 750px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* Cards Grid */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 40px;
+  margin-bottom: 100px;
+}
+
+.role-card {
+  position: relative;
+  background: var(--card-bg);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: 32px;
+  padding: 48px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: var(--shadow-sm);
+  animation: revealUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.role-card:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.role-card:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.role-card:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.role-card:nth-child(4) {
+  animation-delay: 0.4s;
+}
+
+.role-card:hover {
+  transform: translateY(-15px) scale(1.02);
+  box-shadow: var(--shadow-lg);
+  border-color: rgba(59, 130, 246, 0.4);
+  background: white;
+}
+
+:host-context(.dark-mode) .role-card:hover {
+  background: #1e293b;
+  box-shadow: 0 20px 40px -20px var(--card-glow);
+}
+
+/* Shimmer Effect */
+.card-shimmer {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg,
+      transparent 45%,
+      rgba(255, 255, 255, 0.1) 50%,
+      transparent 55%);
+  background-size: 250% 250%;
+  pointer-events: none;
+  animation: shimmer 4s infinite linear;
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+
+.role-card:hover .card-shimmer {
+  opacity: 1;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -125% -125%;
+  }
+
+  100% {
+    background-position: 125% 125%;
+  }
+}
+
+/* Icon Styling */
+.icon-wrapper {
+  width: 86px;
+  height: 86px;
+  border-radius: 24px;
+  background: linear-gradient(135deg, #3b82f6, #60a5fa);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 40px;
+  color: white;
+  font-size: 2.2rem;
+  box-shadow: 0 10px 20px -5px rgba(59, 130, 246, 0.4);
+  transition: all 0.5s;
+}
+
+.icon-purple {
+  background: linear-gradient(135deg, #8b5cf6, #c084fc);
+  box-shadow: 0 10px 20px -5px rgba(139, 92, 246, 0.4);
+}
+
+.icon-teal {
+  background: linear-gradient(135deg, #0d9488, #2dd4bf);
+  box-shadow: 0 10px 20px -5px rgba(13, 148, 136, 0.4);
+}
+
+.icon-orange {
+  background: linear-gradient(135deg, #f59e0b, #fbbf24);
+  box-shadow: 0 10px 20px -5px rgba(245, 158, 11, 0.4);
+}
+
+.role-card:hover .icon-wrapper {
+  transform: scale(1.1) rotate(-8deg);
+  filter: brightness(1.1) saturate(1.2);
+}
+
+.card-title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--text-main);
+  margin-bottom: 16px;
+  letter-spacing: -0.5px;
+}
+
+.card-description {
+  font-size: 1.15rem;
+  color: var(--text-muted);
+  line-height: 1.7;
+  flex-grow: 1;
+}
+
+.card-footer {
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid var(--glass-border);
+}
+
+.learn-more {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #3b82f6;
+  font-weight: 700;
+  font-size: 1rem;
+  opacity: 0.6;
+  transition: all 0.3s;
+}
+
+.role-card:hover .learn-more {
+  opacity: 1;
+  gap: 12px;
+}
+
+/* Action Button */
+.action-container {
+  text-align: center;
+  animation: revealUp 1s cubic-bezier(0.16, 1, 0.3, 1) both 0.6s;
+}
+
+.join-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 15px;
+  background: linear-gradient(90deg, #3b82f6, #2563eb);
+  color: white;
+  padding: 24px 60px;
+  border-radius: 100px;
+  font-size: 1.25rem;
+  font-weight: 900;
+  border: none;
+  cursor: pointer;
+  transition: all 0.4s;
+  box-shadow: 0 20px 40px -10px rgba(59, 130, 246, 0.5);
+  overflow: hidden;
+}
+
+.join-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(120deg,
+      transparent,
+      rgba(255, 255, 255, 0.3),
+      transparent);
+  transition: all 0.6s;
+}
+
+.join-button:hover::before {
+  left: 100%;
+}
+
+.join-button:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 25px 50px -10px rgba(59, 130, 246, 0.6);
+  padding: 24px 70px;
+}
+
+.join-button i {
+  transition: transform 0.4s;
+}
+
+.join-button:hover i {
+  transform: translateX(8px);
+}
+
+/* Animations */
+@keyframes slideDownIn {
+  from {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes revealUp {
+  from {
+    opacity: 0;
+    transform: translateY(60px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .who-is-rafeeq-section {
+    padding: 100px 20px;
+  }
+
+  .section-title {
+    font-size: 3rem;
+  }
+
+  .cards-grid {
+    gap: 24px;
+  }
+
+  .role-card {
+    padding: 32px;
+  }
+
+  .join-button {
+    width: 100%;
+    padding: 20px 30px;
+  }
+}

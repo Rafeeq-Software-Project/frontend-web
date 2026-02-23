@@ -1,0 +1,65 @@
+<div class="verify-page">
+    <!-- Animated Background Blobs -->
+    <div class="bg-blob blob-1"></div>
+    <div class="bg-blob blob-2"></div>
+    <div class="bg-blob blob-3"></div>
+
+    <!-- Top Brand Navigation -->
+    <!-- <div class="top-nav">
+        <div class="brand-container" routerLink="/">
+            <div class="logo-box">
+                <img src="assets/Icon_1_0.svg" alt="Rafeeq Logo" class="logo" />
+            </div>
+            <span class="brand-name">Rafeeq</span>
+        </div>
+    </div> -->
+
+    <div class="verify-card">
+        <div class="verify-header">
+            <div class="icon-wrapper animate-bounce-slow">
+                <div class="envelope-circle">
+                    <i class="fas fa-envelope-open-text"></i>
+                </div>
+                <div class="check-badge">
+                    <i class="fas fa-check"></i>
+                </div>
+            </div>
+            <h1 class="title">Verify Your Email</h1>
+            <p class="subtitle">
+                We've sent a verification link to your email address. Please check your inbox and click the link to
+                activate your account.
+            </p>
+        </div>
+
+        <div class="email-box">
+            <span class="email-address">{{ userEmail }}</span>
+        </div>
+
+        <p class="change-prompt">
+            Not your email? <a routerLink="/signin" class="link">Change email</a>
+        </p>
+
+        <div class="actions">
+            <button class="btn-resend" (click)="onResendEmail()" [disabled]="isResending">
+                <i class="fas fa-sync-alt" [class.fa-spin]="isResending"></i>
+                <span>{{ isResending ? 'Sending...' : 'Click to Resend Email' }}</span>
+            </button>
+
+            <a routerLink="/login" class="back-link">
+                <i class="fas fa-arrow-left"></i>
+                <span>Back to Login</span>
+            </a>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="card-footer">
+            <p>Can't find the email? Check your spam folder or</p>
+            <a routerLink="/reset-password" class="support-link">Contact Support</a>
+        </div>
+    </div>
+
+    <footer class="page-footer">
+        <p>&copy; 2024 Rafeeq Platform. All rights reserved.</p>
+    </footer>
+</div>

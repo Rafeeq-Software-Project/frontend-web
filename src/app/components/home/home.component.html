@@ -1,0 +1,102 @@
+<div class="home-container">
+    <!-- Animated Background Blobs -->
+    <div class="bg-blob blob-1"></div>
+    <div class="bg-blob blob-2"></div>
+    <div class="bg-blob blob-3"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="logo-container" routerLink="/">
+            <img src="assets/Icon_1_0.svg" alt="Rafeeq Logo" class="logo">
+            <span class="brand-name">Rafeeq</span>
+        </div>
+
+        <!-- Desktop Navigation -->
+        <nav class="main-nav">
+            <a routerLink="/who-is-rafeeq" class="nav-link">About</a>
+            <a routerLink="/login" class="nav-link">Login</a>
+            <button class="btn btn-primary join-btn" routerLink="/signin">Join Now</button>
+        </nav>
+
+        <!-- Mobile Menu Toggle -->
+        <button class="menu-toggle" (click)="toggleMenu()" [class.active]="isMenuOpen">
+            <i class="fas" [ngClass]="isMenuOpen ? 'fa-times' : 'fa-bars'"></i>
+        </button>
+
+        <!-- Mobile Navigation Overlay -->
+        <div class="mobile-nav-overlay" [class.active]="isMenuOpen" (click)="closeMenu()">
+            <nav class="mobile-nav" (click)="$event.stopPropagation()">
+                <div class="mobile-nav-header">
+                    <div class="logo-container">
+                        <img src="assets/Icon_1_0.svg" alt="Rafeeq Logo" class="logo">
+                        <span class="brand-name">Rafeeq</span>
+                    </div>
+                    <button class="close-menu" (click)="closeMenu()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="mobile-nav-links">
+                    <a routerLink="/who-is-rafeeq" class="mobile-link" (click)="closeMenu()">
+                        <div class="link-icon"><i class="fas fa-info-circle"></i></div>
+                        <span>About Rafeeq</span>
+                    </a>
+                    <a routerLink="/login" class="mobile-link" (click)="closeMenu()">
+                        <div class="link-icon"><i class="fas fa-sign-in-alt"></i></div>
+                        <span>Login</span>
+                    </a>
+                    <div class="mobile-nav-footer">
+                        <button class="btn btn-primary w-full" routerLink="/signin" (click)="closeMenu()">
+                            Create Account <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="badge-container">
+            <span class="badge">
+                <span class="dot"></span> Now accepting new partners
+            </span>
+        </div>
+
+        <h1 class="headline">
+            Connecting Founders,<br>
+            Investors, and Volunteers<br>
+            in <span class="highlight">One Platform</span>
+        </h1>
+
+        <p class="subtext">
+            Join the ecosystem designed to accelerate growth and foster collaboration.
+            Build your team, find funding, or contribute your skills to high-impact projects.
+        </p>
+
+        <div class="cta-buttons">
+            <button class="btn btn-primary" routerLink="/who-is-rafeeq">
+                Get Started <i class="fas fa-arrow-right-long arrow"></i>
+            </button>
+            <button routerLink="/login" class="btn btn-outline">
+                Member Login
+            </button>
+        </div>
+
+        <div class="dashboard-preview">
+            <div class="image-wrapper">
+                <img src="assets/test.png" alt="Platform Dashboard Preview" class="dashboard-img">
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="social-icons">
+            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+        </div>
+        <p class="copyright">© 2024 Rafeeq Platform. All rights reserved.</p>
+    </footer>
+</div>

@@ -1,0 +1,11 @@
+{
+  "routes": [
+    "/",
+    "/founder-dashboard",
+    "/investor-dashboard",
+    "/login",
+    "/signin",
+    "/verify-email",
+    "/who-is-rafeeq"
+  ]
+}

@@ -1,93 +1,124 @@
-<div class="login-page">
-  <!-- Animated Background Blobs -->
-  <div class="bg-blob blob-1"></div>
-  <div class="bg-blob blob-2"></div>
-  <div class="bg-blob blob-3"></div>
+<div class="auth-wrapper">
 
-  <div class="login-card">
-    <div class="login-header">
-      <div class="logo-container" routerLink="/">
-        <img src="assets/Icon_1_0.svg" alt="Rafeeq Logo" class="logo" />
-        <span class="brand-name">Rafeeq</span>
+  <!-- Left Sidebar Section -->
+  <div class="auth-sidebar">
+    <div class="sidebar-header">
+      <div routerLink="/" class="brand">
+        <div class="logo-box">
+          <i class="fas fa-check-shield"></i>
+        </div>
+        <span>Rafeeq</span>
       </div>
-      <h1 class="welcome-title">Welcome back</h1>
-      <p class="welcome-subtitle">Enter your credentials to access your account</p>
     </div>
 
-    <!-- Error Message Alert -->
-    <div *ngIf="errorMessage" class="alert alert-danger animate-fade-in">
-      <i class="fas fa-exclamation-circle"></i> {{ errorMessage }}
+    <div class="sidebar-main">
+      <h1 class="hero-title">Welcome <br>back.</h1>
+      <p class="hero-subtitle">
+        Sign in to continue building the next generation of world-changing startups with founders and investors.
+      </p>
     </div>
 
-
-    <form class="login-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-      <!-- Email Field -->
-      <div class="field">
-        <label for="email">Email Address</label>
-        <div class="input-wrapper">
-          <i class="fas fa-envelope input-icon"></i>
-          <input id="email" type="email" formControlName="email" placeholder="Enter your email" autocomplete="email" />
-        </div>
-        <div class="error-msg" *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
-          <span *ngIf="loginForm.get('email')?.errors?.['required']">Email is required.</span>
-          <span *ngIf="loginForm.get('email')?.errors?.['email']">Please enter a valid email address.</span>
-        </div>
+    <div class="sidebar-footer">
+      <div class="verified-badge">
+        <i class="fas fa-users-crown"></i>
+        <span> Founder &amp; Investor Hub <i class="fa-solid fa-handshake-angle"></i></span>
       </div>
-
-      <!-- Password Field -->
-      <div class="field">
-        <label for="password">Password</label>
-        <div class="input-wrapper">
-          <i class="fas fa-lock input-icon"></i>
-          <input id="password" [type]="showPassword ? 'text' : 'password'" formControlName="password"
-            placeholder="Enter your password" autocomplete="current-password" />
-          <button type="button" class="password-toggle" (click)="togglePasswordVisibility()"
-            aria-label="Toggle password visibility">
-            <i class="fas" [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
-          </button>
-        </div>
-        <div class="error-msg" *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
-          <span *ngIf="loginForm.get('password')?.errors?.['required']">Password is required.</span>
-        </div>
-      </div>
-
-
-      <!-- Form Footer (Remember & Forgot) -->
-      <div class="form-footer">
-        <label class="remember-me">
-          <input type="checkbox">
-          <span>Remember me</span>
-        </label>
-        <a routerLink="/verify-email" class="forgot-link">Forgot password?</a>
-      </div>
-
-      <!-- Submit Button -->
-      <button type="submit" class="btn-login" [disabled]="loginForm.invalid || isLoading">
-        <span *ngIf="!isLoading">Sign In</span>
-        <span *ngIf="isLoading"><i class="fas fa-circle-notch fa-spin"></i> Signing In...</span>
-        <i *ngIf="!isLoading" class="fas fa-arrow-right-to-bracket"></i>
-      </button>
-
-    </form>
-
-    <div class="divider">
-      <span class="divider-text">OR CONTINUE WITH</span>
     </div>
-
-    <div class="social-buttons">
-      <button type="button" class="btn-social" (click)="onGoogleLogin()">
-        <img src="assets/google.svg" alt="Google">
-        <span>Google</span>
-      </button>
-      <button type="button" class="btn-social" (click)="onFacebookLogin()">
-        <img src="assets/facebook.svg" alt="Facebook">
-        <span>Facebook</span>
-      </button>
-    </div>
-
-    <p class="signup-prompt">
-      Don't have an account?
-      <a routerLink="/signin" class="signup-link">Create Account</a>
-    </p>
   </div>
+
+  <!-- Right Form Section -->
+  <div class="auth-content">
+    <div class="form-container">
+      <div class="form-header">
+        <h2 class="title">Sign In</h2>
+        <p class="subtitle">Enter your credentials to access your account.</p>
+      </div>
+
+      <!-- Error Alert -->
+      <div *ngIf="errorMessage" class="alert alert-danger animate-fade-in">
+        <i class="fas fa-exclamation-circle"></i> {{ errorMessage }}
+      </div>
+
+      <form class="login-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+
+        <!-- Email Field -->
+        <div class="form-group full-width">
+          <label for="email">Email Address</label>
+          <div class="input-container"
+            [class.error]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
+            <i class="fas fa-envelope"></i>
+            <input id="email" type="email" formControlName="email" placeholder="Enter your email address"
+              autocomplete="email">
+          </div>
+          <div class="error-msg" *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
+            <span *ngIf="loginForm.get('email')?.errors?.['required']">Email is required.</span>
+            <span *ngIf="loginForm.get('email')?.errors?.['email']">Please enter a valid email address.</span>
+          </div>
+        </div>
+
+        <!-- Password Field -->
+        <div class="form-group full-width">
+          <label for="password">Password</label>
+          <div class="input-container"
+            [class.error]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+            <i class="fas fa-lock"></i>
+            <input id="password" [type]="showPassword ? 'text' : 'password'" formControlName="password"
+              placeholder="Enter your password" autocomplete="current-password">
+            <button type="button" class="password-toggle" (click)="togglePasswordVisibility()"
+              aria-label="Toggle password visibility">
+              <i class="fas" [class.fa-eye]="!showPassword" [class.fa-eye-slash]="showPassword"></i>
+            </button>
+          </div>
+          <div class="error-msg" *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+            <span *ngIf="loginForm.get('password')?.errors?.['required']">Password is required.</span>
+          </div>
+        </div>
+
+        <!-- Remember Me & Forgot Password -->
+        <div class="form-options">
+          <label class="remember-me">
+            <input type="checkbox">
+            <span>Remember me</span>
+          </label>
+          <a routerLink="/verify-email" class="forgot-link">Forgot password?</a>
+        </div>
+
+        <!-- Submit -->
+        <button type="submit" class="submit-btn" [disabled]="loginForm.invalid || isLoading">
+          <span *ngIf="!isLoading">Sign In <i class="fas fa-arrow-right-to-bracket"></i></span>
+          <span *ngIf="isLoading"><i class="fas fa-circle-notch fa-spin"></i> Signing In...</span>
+        </button>
+
+      </form>
+
+      <!-- Divider -->
+      <div class="divider">
+        <span class="divider-text">OR CONTINUE WITH</span>
+      </div>
+
+      <!-- Social Buttons -->
+      <div class="social-buttons">
+        <button type="button" class="btn-social" (click)="onGoogleLogin()">
+          <img src="assets/google.svg" alt="Google">
+          <span>Google</span>
+        </button>
+        <button type="button" class="btn-social" (click)="onFacebookLogin()">
+          <img src="assets/facebook.svg" alt="Facebook">
+          <span>Facebook</span>
+        </button>
+      </div>
+
+      <!-- Footer Info -->
+      <div class="form-footer">
+        <p class="security-text">
+          <i class="fas fa-shield-alt"></i> Your data is safe and encrypted.
+        </p>
+        <p class="signup-link-text">
+          Don't have an account? <a routerLink="/signin">Create Account</a>
+        </p>
+      </div>
+
+    </div>
+  </div>
+
 </div>

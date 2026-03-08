@@ -1,10 +1,13 @@
 {
   "routes": [
     "/",
+    "/forgot-password",
     "/founder-dashboard",
     "/investor-dashboard",
     "/login",
+    "/reset-password",
     "/signin",
+    "/verify-code",
     "/verify-email",
     "/who-is-rafeeq"
   ]

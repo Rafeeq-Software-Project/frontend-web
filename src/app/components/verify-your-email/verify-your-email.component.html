@@ -35,10 +35,6 @@
             <span class="email-address">{{ userEmail }}</span>
         </div>
 
-        <p class="change-prompt">
-            Not your email? <a routerLink="/signin" class="link">Change email</a>
-        </p>
-
         <div class="actions">
             <button class="btn-resend" (click)="onResendEmail()" [disabled]="isResending">
                 <i class="fas fa-sync-alt" [class.fa-spin]="isResending"></i>

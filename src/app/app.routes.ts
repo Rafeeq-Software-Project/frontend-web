@@ -4,6 +4,9 @@ import { WhoIsRafeeqComponent } from './components/who-is-rafeeq/who-is-rafeeq.c
 import { LoginComponent } from './components/login/login.component';
 import { SigninComponent } from './components/signin/signin.component';
 import { VerifyYourEmailComponent } from './components/verify-your-email/verify-your-email.component';
+import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
+import { VerifyCodeComponent } from './components/verify-code/verify-code.component';
+import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 import { FounderDashboardComponent } from './components/founder/founder-dashboard/founder-dashboard.component';
 import { InvestorDashboardComponent } from './components/investor/investor-dashboard/investor-dashboard.component';
 import { AuthGuard } from './guards/auth.guard';
@@ -14,6 +17,11 @@ export const routes: Routes = [
     { path: 'login', component: LoginComponent },
     { path: 'signin', component: SigninComponent },
     { path: 'verify-email', component: VerifyYourEmailComponent },
+
+    // ── Forgot Password Flow ──
+    { path: 'forgot-password', component: ForgotPasswordComponent },
+    { path: 'verify-code', component: VerifyCodeComponent },
+    { path: 'reset-password', component: ResetPasswordComponent },
 
     {
         path: 'founder-dashboard',

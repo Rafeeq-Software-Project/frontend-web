@@ -1,0 +1,109 @@
+<div class="auth-wrapper">
+
+    <!-- Left Sidebar -->
+    <div class="auth-sidebar">
+        <div class="sidebar-header">
+            <div routerLink="/" class="brand">
+                <div class="logo-box">
+                    <img src="assets/r-logo.webp" alt="Rafeeq Logo" class="brand-logo small">
+                </div>
+                <span>Rafeeq</span>
+            </div>
+        </div>
+
+        <div class="sidebar-main">
+            <h1 class="hero-title">Check<br>Your<br>Email.</h1>
+            <p class="hero-subtitle">
+                We've sent a verification code to your inbox. Enter it below to continue with your password reset.
+            </p>
+        </div>
+
+        <div class="sidebar-footer">
+            <div class="verified-badge">
+                <i class="fas fa-mail-bulk"></i>
+                <span>Code sent to your email</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right Form Section -->
+    <div class="auth-content">
+        <div class="form-container">
+
+            <!-- Back Button -->
+            <button class="back-btn" (click)="goBack()">
+                <i class="fas fa-arrow-left"></i> Back
+            </button>
+
+            <div class="form-header">
+                <div class="step-badge">
+                    <i class="fas fa-key"></i>
+                    <span>Step 2 of 3</span>
+                </div>
+                <h2 class="title">Enter Verification Code</h2>
+                <p class="subtitle">
+                    We sent a code to <strong>{{ maskEmail(userEmail) }}</strong>.<br>
+                    Check your inbox and enter the code below.
+                </p>
+            </div>
+
+            <!-- Error Alert -->
+            <div *ngIf="errorMessage" class="alert alert-danger animate-fade-in">
+                <i class="fas fa-exclamation-circle"></i> {{ errorMessage }}
+            </div>
+
+            <!-- Success Alert -->
+            <div *ngIf="successMessage" class="alert alert-success animate-fade-in">
+                <i class="fas fa-check-circle"></i> {{ successMessage }}
+            </div>
+
+            <form class="auth-form" [formGroup]="codeForm" (ngSubmit)="onSubmit()">
+
+                <!-- Code Field -->
+                <div class="form-group full-width">
+                    <label for="vc-code">Verification Code</label>
+                    <div class="input-container"
+                        [class.error]="codeForm.get('code')?.invalid && codeForm.get('code')?.touched">
+                        <i class="fas fa-hashtag"></i>
+                        <input id="vc-code" type="text" formControlName="code" placeholder="Enter verification code"
+                            autocomplete="one-time-code" inputmode="numeric" maxlength="8">
+                    </div>
+                    <div class="error-msg" *ngIf="codeForm.get('code')?.invalid && codeForm.get('code')?.touched">
+                        <span *ngIf="codeForm.get('code')?.errors?.['required']">Verification code is required.</span>
+                        <span *ngIf="codeForm.get('code')?.errors?.['minlength']">Code must be at least 4
+                            characters.</span>
+                    </div>
+                </div>
+
+                <!-- Submit -->
+                <button type="submit" id="vc-verify-btn" class="submit-btn" [disabled]="codeForm.invalid || isLoading">
+                    <span *ngIf="!isLoading">Verify Code <i class="fas fa-shield-check"></i></span>
+                    <span *ngIf="isLoading"><i class="fas fa-circle-notch fa-spin"></i> Verifying...</span>
+                </button>
+
+            </form>
+
+            <!-- Resend Section -->
+            <div class="resend-section">
+                <p class="resend-text">Didn't receive the code?</p>
+                <button class="resend-btn" (click)="onResend()" [disabled]="resendCooldown > 0 || isResending">
+                    <span *ngIf="isResending"><i class="fas fa-circle-notch fa-spin"></i> Resending...</span>
+                    <span *ngIf="!isResending && resendCooldown === 0">
+                        <i class="fas fa-redo"></i> Resend Code
+                    </span>
+                    <span *ngIf="!isResending && resendCooldown > 0">
+                        Resend in {{ resendCooldown }}s
+                    </span>
+                </button>
+            </div>
+
+            <div class="form-footer">
+                <p class="security-text">
+                    <i class="fas fa-shield-alt"></i> Your data is safe and encrypted.
+                </p>
+            </div>
+
+        </div>
+    </div>
+
+</div>

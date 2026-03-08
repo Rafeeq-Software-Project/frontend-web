@@ -26,6 +26,11 @@ export class AuthService {
     private loginUrl = `${environment.apiBaseUrl}/api/auth/login`;
     private registerUrl = `${environment.apiBaseUrl}/api/auth/register`;
 
+    // ── Forgot-password endpoints (replace with your actual paths) ──
+    private forgotPasswordUrl = `${environment.apiBaseUrl}/api/auth/forgot-password`; // TODO: replace
+    private verifyCodeUrl = `${environment.apiBaseUrl}/api/auth/verify-otp`;     // TODO: replace
+    private resetPasswordUrl = `${environment.apiBaseUrl}/api/auth/reset-password`;  // TODO: replace
+
     private currentUserSubject = new BehaviorSubject<any>(null);
     public currentUser$ = this.currentUserSubject.asObservable();
 
@@ -99,5 +104,17 @@ export class AuthService {
         const userData = localStorage.getItem('userData');
         if (!userData) return null;
         return JSON.parse(userData).roleId;
+    }
+
+    public forgotPassword(email: string): Observable<any> {
+        return this.http.post(this.forgotPasswordUrl, { email });
+    }
+
+    public verifyCode(email: string, code: string): Observable<any> {
+        return this.http.post(this.verifyCodeUrl, { email, code });
+    }
+
+    public resetPassword(resetData: any): Observable<any> {
+        return this.http.post(this.resetPasswordUrl, resetData);
     }
 }

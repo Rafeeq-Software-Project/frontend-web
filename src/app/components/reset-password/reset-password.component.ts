@@ -24,7 +24,7 @@ export class ResetPasswordComponent implements OnInit {
   private router = inject(Router);
 
   userEmail = '';
-  resetCode = '';
+  resetToken = '';
   isLoading = false;
   errorMessage = '';
   successMessage = '';
@@ -39,13 +39,13 @@ export class ResetPasswordComponent implements OnInit {
 
   ngOnInit() {
     const email = sessionStorage.getItem('resetEmail');
-    const code = sessionStorage.getItem('resetCode');
-    if (!email || !code) {
+    const token = sessionStorage.getItem('resetToken');
+    if (!email || !token) {
       this.router.navigate(['/forgot-password']);
       return;
     }
     this.userEmail = email;
-    this.resetCode = code;
+    this.resetToken = token;
   }
 
   onSubmit() {
@@ -57,19 +57,17 @@ export class ResetPasswordComponent implements OnInit {
     this.isLoading = true;
     this.errorMessage = '';
 
-    const payload = {
-      email: this.userEmail,
-      code: this.resetCode,
-      newPassword: this.resetForm.value.newPassword
-    };
-
-    this.authService.resetPassword(payload).subscribe({
+    this.authService.resetPassword(
+      this.resetToken,
+      this.resetForm.value.newPassword!,
+      this.resetForm.value.confirmPassword!
+    ).subscribe({
       next: () => {
         this.isLoading = false;
         this.resetComplete = true;
         // Clear session data
         sessionStorage.removeItem('resetEmail');
-        sessionStorage.removeItem('resetCode');
+        sessionStorage.removeItem('resetToken');
       },
       error: (err) => {
         this.isLoading = false;

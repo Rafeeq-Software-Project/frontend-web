@@ -49,10 +49,12 @@ export class VerifyCodeComponent implements OnInit {
         const code = this.codeForm.value.code!;
 
         this.authService.verifyCode(this.userEmail, code).subscribe({
-            next: () => {
+            next: (response: any) => {
                 this.isLoading = false;
-                // Store token/email for reset password page
-                sessionStorage.setItem('resetCode', code);
+                // Store the actual reset token returned by backend for reset password page
+                // Fallback to response string or any token property your backend returns
+                const token = response?.resetToken || response?.token || response;
+                sessionStorage.setItem('resetToken', token);
                 this.router.navigate(['/reset-password']);
             },
             error: (err) => {

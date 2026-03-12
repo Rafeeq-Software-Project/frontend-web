@@ -111,10 +111,11 @@ export class AuthService {
     }
 
     public verifyCode(email: string, code: string): Observable<any> {
-        return this.http.post(this.verifyCodeUrl, { email, code });
+        return this.http.post(this.verifyCodeUrl, { email, otp: code });
     }
 
-    public resetPassword(resetData: any): Observable<any> {
-        return this.http.post(this.resetPasswordUrl, resetData);
+    public resetPassword(resetToken: string, newPassword: string, confirmPassword: string): Observable<any> {
+        return this.http.post(this.resetPasswordUrl, { resetToken, newPassword, confirmPassword }
+        );
     }
 }

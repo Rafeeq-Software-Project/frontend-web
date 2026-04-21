@@ -1,6 +1,6 @@
-import { Component, HostListener, OnInit, OnDestroy } from '@angular/core';
+import { Component, HostListener, OnInit, OnDestroy, Inject, PLATFORM_ID } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { ThemeService } from '../../services/theme.service';
 import { Subscription } from 'rxjs';
 
@@ -17,7 +17,10 @@ export class HomeComponent implements OnInit, OnDestroy {
   isDarkMode = false;
   private themeSub!: Subscription;
 
-  constructor(private themeService: ThemeService) { }
+  constructor(
+    private themeService: ThemeService,
+    @Inject(PLATFORM_ID) private platformId: object
+  ) { }
 
   ngOnInit(): void {
     this.themeSub = this.themeService.isDarkMode$.subscribe(dark => {
@@ -35,9 +38,11 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   @HostListener('window:scroll', [])
   onScroll(): void {
-    this.isScrolled = window.scrollY > 20;
-    if (this.isScrolled && this.isMenuOpen) {
-      this.isMenuOpen = false;
+    if (isPlatformBrowser(this.platformId)) {
+      this.isScrolled = window.scrollY > 20;
+      if (this.isScrolled && this.isMenuOpen) {
+        this.isMenuOpen = false;
+      }
     }
   }
 

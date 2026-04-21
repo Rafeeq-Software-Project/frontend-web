@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, inject, PLATFORM_ID } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 interface Message {
@@ -34,6 +34,7 @@ interface Conversation {
   styleUrls: ['./chat.component.css']
 })
 export class ChatComponent {
+  private platformId = inject(PLATFORM_ID);
   currentUser: User = {
     id: 0,
     name: 'Me',
@@ -86,7 +87,7 @@ export class ChatComponent {
 
   constructor() {
     // On desktop (> 768px), select the first conversation by default
-    if (typeof window !== 'undefined' && window.innerWidth > 768) {
+    if (isPlatformBrowser(this.platformId) && window.innerWidth > 768) {
       this.selectedConversation = this.conversations[0];
     }
   }

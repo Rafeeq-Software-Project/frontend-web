@@ -1,5 +1,5 @@
-import { Component, HostListener, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, HostListener, inject, PLATFORM_ID, Inject } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { MyProjectComponent } from '../my-project/my-project.component';
 import { ChatComponent } from '../chat/chat.component';
 import { ThemeService } from '../../../services/theme.service';
@@ -17,6 +17,7 @@ import { ThemeService } from '../../../services/theme.service';
 })
 export class FounderDashboardComponent {
   private themeService = inject(ThemeService);
+  private platformId = inject(PLATFORM_ID);
   isDarkMode$ = this.themeService.isDarkMode$;
 
   isMobileMenuOpen = false;
@@ -49,13 +50,17 @@ export class FounderDashboardComponent {
 
   @HostListener('document:keydown.escape')
   onEscape() {
-    this.closeMobileMenu();
+    if (isPlatformBrowser(this.platformId)) {
+      this.closeMobileMenu();
+    }
   }
 
   @HostListener('window:resize')
   onResize() {
-    if (window.innerWidth > 768 && this.isMobileMenuOpen) {
-      this.closeMobileMenu();
+    if (isPlatformBrowser(this.platformId)) {
+      if (window.innerWidth > 768 && this.isMobileMenuOpen) {
+        this.closeMobileMenu();
+      }
     }
   }
 }

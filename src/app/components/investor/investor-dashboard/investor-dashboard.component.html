@@ -1,1 +1,285 @@
-<p>investor-dashboard works!</p>
+<div class="dashboard-wrapper" [class.menu-open]="isMobileMenuOpen">
+    <!-- Left Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo-circle">
+                <span class="logo-r">R</span>
+            </div>
+            <div class="brand">
+                <h1 class="brand-name">Rafeeq</h1>
+                <span class="brand-tagline">Investor Portal</span>
+            </div>
+            <button type="button" class="sidebar-close" aria-label="Close menu" (click)="closeMobileMenu()"></button>
+        </div>
+        <nav class="sidebar-nav">
+            <a class="nav-item" [class.active]="currentView === 'dashboard'" href="#"
+                (click)="setView('dashboard', $event)">
+                <i class="fa-solid fa-chart-pie"></i> <span>Dashboard overview</span>
+            </a>
+            <a class="nav-item" [class.active]="currentView === 'profile'" href="#"
+                (click)="setView('profile', $event)">
+                <i class="fa-regular fa-user"></i> <span>Profile</span>
+            </a>
+            <a class="nav-item" [class.active]="currentView === 'settings'" href="#"
+                (click)="setView('settings', $event)">
+                <i class="fa-solid fa-gears"></i> <span>Settings</span>
+            </a>
+        </nav>
+        <a class="nav-item logout" href="#" (click)="logout($event)">
+            <i class="fa-solid fa-arrow-right-from-bracket"></i> <span>Log out</span>
+        </a>
+    </aside>
+
+    <div class="mobile-overlay" [class.visible]="isMobileMenuOpen" (click)="closeMobileMenu()" aria-hidden="true"></div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Mobile Header -->
+        <header class="mobile-header">
+            <button type="button" class="mobile-menu-btn" aria-label="Open menu" (click)="openMobileMenu()"></button>
+            <div class="mobile-title">Investor Dashboard</div>
+            <div class="mobile-actions">
+                <button type="button" class="icon-btn theme-toggle" (click)="toggleTheme()"
+                    [attr.aria-label]="(isDarkMode$ | async) ? 'Switch to light mode' : 'Switch to dark mode'">
+                    <i [class]="(isDarkMode$ | async) ? 'fa-solid fa-sun' : 'fa-solid fa-moon'"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Top Header -->
+        <header class="top-header">
+            <div class="search-bar">
+                <i class="fa-brands fa-sistrix"></i>
+                <input type="text" placeholder="Search startups, projects..." />
+            </div>
+            <div class="header-actions">
+                <button type="button" class="icon-btn theme-toggle" (click)="toggleTheme()"
+                    [attr.aria-label]="(isDarkMode$ | async) ? 'Switch to light mode' : 'Switch to dark mode'">
+                    <i [class]="(isDarkMode$ | async) ? 'fa-solid fa-sun' : 'fa-solid fa-moon'"></i>
+                </button>
+                <button type="button" class="icon-btn" aria-label="Notifications">
+                    <i class="fa-regular fa-bell"></i>
+                </button>
+                <div class="user-info pointer-hover" (click)="setView('settings')" title="Manage Settings">
+                    <div class="user-details">
+                        <span class="user-name">{{ userFullName }}</span>
+                        <span class="user-role">{{ userRoleTitle }}</span>
+                    </div>
+                    <div class="user-avatar"
+                        [style.background-image]="profilePictureUrl ? 'url(' + profilePictureUrl + ')' : ''"></div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Dashboard Content -->
+        <div class="dashboard-body">
+
+            <!-- Main Dashboard View -->
+            <ng-container *ngIf="currentView === 'dashboard'">
+                <div class="dashboard-header animate-slide-up">
+                    <div>
+                        <h2 class="dashboard-title">Dashboard</h2>
+                        <p class="dashboard-subtitle">Overview of your investment portfolio</p>
+                    </div>
+                </div>
+
+                <!-- Summary Cards -->
+                <div class="summary-cards">
+                    <div class="summary-card" style="animation-delay: 0.1s">
+                        <div class="card-icon-wrap">
+                            <i class="fa-solid fa-wallet"></i>
+                        </div>
+                        <span class="card-value">0</span>
+                        <span class="card-label">Active Investments</span>
+                    </div>
+                    <div class="summary-card" style="animation-delay: 0.2s">
+                        <div class="card-icon-wrap">
+                            <i class="fa-solid fa-handshake"></i>
+                        </div>
+                        <span class="card-value">0</span>
+                        <span class="card-label">Founders Connected</span>
+                    </div>
+                    <div class="summary-card" style="animation-delay: 0.3s">
+                        <div class="card-icon-wrap">
+                            <i class="fa-solid fa-rocket"></i>
+                        </div>
+                        <span class="card-value">0</span>
+                        <span class="card-label">Projects Saved</span>
+                    </div>
+                </div>
+            </ng-container>
+
+            <!-- Complete Profile View -->
+            <ng-container *ngIf="currentView === 'complete-profile'">
+                <div class="dashboard-header animate-slide-up">
+                    <div>
+                        <h2 class="dashboard-title" style="color: var(--primary);">Complete Your Profile</h2>
+                        <p class="dashboard-subtitle">We need a few details to get your investor dashboard ready.</p>
+                    </div>
+                </div>
+                <div class="settings-container animate-slide-up" style="animation-delay: 0.2s">
+                    <div class="side-card profile-settings-card">
+                        <div *ngIf="isLoadingProfile" class="loading-state">Setting things up...</div>
+                        <ng-container *ngTemplateOutlet="profileFormTemplate"></ng-container>
+                    </div>
+                </div>
+            </ng-container>
+
+            <!-- Profile View -->
+            <ng-container *ngIf="currentView === 'profile'">
+                <div class="dashboard-header animate-slide-up">
+                    <div>
+                        <h2 class="dashboard-title">Your Profile</h2>
+                        <p class="dashboard-subtitle">View your public investor details</p>
+                    </div>
+                    <div class="dashboard-actions">
+                        <button type="button" class="btn-primary" (click)="setView('settings')">
+                            <i class="fa-solid fa-pen"></i> Edit Profile
+                        </button>
+                    </div>
+                </div>
+
+                <div class="profile-view-container animate-slide-up" style="animation-delay: 0.2s"
+                    *ngIf="investorProfile">
+                    <!-- Profile View Card -->
+                    <div class="side-card profile-display-card">
+                        <div class="profile-banner">
+                            <div class="profile-avatar animate-pulse-hover"
+                                [style.background-image]="profilePictureUrl ? 'url(' + profilePictureUrl + ')' : ''"
+                                (click)="setView('settings')" tabindex="0" title="Click to edit avatar"></div>
+                        </div>
+                        <div class="profile-info-content">
+                            <h3 class="profile-name">{{ userFullName }}</h3>
+                            <p class="profile-role">
+                                <i class="fa-solid fa-chart-line"></i> {{ investorProfile.investorType }}
+                            </p>
+
+                            <div class="profile-badges">
+                                <span class="tag-badge"><i class="fa-solid fa-location-dot"></i> {{
+                                    investorProfile.location }}</span>
+                                <span class="tag-badge"><i class="fa-solid fa-briefcase"></i> {{
+                                    investorProfile.experienceYears }} Years Experience</span>
+                                <span class="tag-badge"><i class="fa-solid fa-money-bill-trend-up"></i> {{
+                                    investorProfile.minInvestment | currency:'USD':'symbol':'1.0-0' }} - {{
+                                    investorProfile.maxInvestment | currency:'USD':'symbol':'1.0-0' }}</span>
+                                <span class="tag-badge"><i class="fa-solid fa-layer-group"></i> {{ investorProfile.stage
+                                    }}</span>
+                            </div>
+
+                            <div class="profile-bio" *ngIf="investorProfile.investmentInterests">
+                                <h4>Investment Interests</h4>
+                                <p>{{ investorProfile.investmentInterests }}</p>
+                            </div>
+
+                            <div class="profile-bio" *ngIf="investorProfile.bio" style="margin-top:20px;">
+                                <h4>About Me</h4>
+                                <p>{{ investorProfile.bio }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+
+            <!-- Settings View -->
+            <ng-container *ngIf="currentView === 'settings'">
+                <div class="dashboard-header animate-slide-up">
+                    <div>
+                        <h2 class="dashboard-title">Settings</h2>
+                        <p class="dashboard-subtitle">Manage your profile and account settings</p>
+                    </div>
+                </div>
+
+                <div class="settings-container animate-slide-up" style="animation-delay: 0.2s">
+                    <div class="side-card profile-settings-card">
+                        <div *ngIf="isLoadingProfile" class="loading-state">Loading profile data...</div>
+                        <ng-container *ngTemplateOutlet="profileFormTemplate"></ng-container>
+                    </div>
+                </div>
+            </ng-container>
+
+            <!-- Shared Form Template -->
+            <ng-template #profileFormTemplate>
+                <form *ngIf="!isLoadingProfile" [formGroup]="profileForm" (ngSubmit)="saveProfile()"
+                    class="profile-form">
+                    <div *ngIf="profileErrorMessage" class="error-msg">{{ profileErrorMessage }}</div>
+                    <div *ngIf="profileSuccessMessage" class="success-msg">{{ profileSuccessMessage }}</div>
+
+                    <div class="profile-picture-section">
+                        <div class="user-avatar large-avatar animate-pulse-hover"
+                            [style.background-image]="profilePictureUrl ? 'url(' + profilePictureUrl + ')' : ''"></div>
+                        <div class="avatar-actions">
+                            <label class="btn-outline upload-btn">
+                                <i class="fa-solid fa-upload"></i> Upload picture
+                                <input type="file" (change)="onFileSelected($event)" accept="image/*" hidden />
+                            </label>
+                            <button *ngIf="profilePictureUrl" type="button" class="btn-text btn-text-danger"
+                                (click)="deleteProfilePicture()">
+                                <i class="fa-solid fa-trash"></i> Remove
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>First Name *</label>
+                            <input type="text" formControlName="firstName" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label>Last Name *</label>
+                            <input type="text" formControlName="lastName" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label>Investor Type *</label>
+                            <input type="text" formControlName="investorType" class="form-control"
+                                placeholder="e.g. Angel Investor, VC" />
+                        </div>
+                        <div class="form-group">
+                            <label>Location *</label>
+                            <input type="text" formControlName="location" class="form-control"
+                                placeholder="City, Country" />
+                        </div>
+
+                        <div class="form-group">
+                            <label>Minimum Investment ($) *</label>
+                            <input type="number" formControlName="minInvestment" class="form-control" min="0" />
+                        </div>
+                        <div class="form-group">
+                            <label>Maximum Investment ($) *</label>
+                            <input type="number" formControlName="maxInvestment" class="form-control" min="0" />
+                        </div>
+
+                        <div class="form-group">
+                            <label>Experience (Years) *</label>
+                            <input type="number" formControlName="experienceYears" class="form-control" min="0" />
+                        </div>
+                        <div class="form-group">
+                            <label>Target Stage *</label>
+                            <input type="text" formControlName="stage" class="form-control"
+                                placeholder="e.g. Seed, Series A" />
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label>Investment Interests *</label>
+                            <input type="text" formControlName="investmentInterests" class="form-control"
+                                placeholder="e.g. Technology, Health, FinTech" />
+                        </div>
+                        <div class="form-group full-width">
+                            <label>Bio *</label>
+                            <textarea formControlName="bio" class="form-control" rows="4"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn-primary" [disabled]="isSavingProfile">
+                            <i class="fa-solid fa-save" *ngIf="!isSavingProfile"></i>
+                            <i class="fa-solid fa-spinner fa-spin" *ngIf="isSavingProfile"></i>
+                            {{ isSavingProfile ? 'Saving...' : (currentView === 'complete-profile' ? 'Complete Profile'
+                            : 'Save Changes') }}
+                        </button>
+                    </div>
+                </form>
+            </ng-template>
+
+        </div>
+    </main>
+</div>

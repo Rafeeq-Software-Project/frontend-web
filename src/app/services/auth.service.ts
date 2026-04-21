@@ -23,13 +23,13 @@ export interface AuthResponse {
     providedIn: 'root'
 })
 export class AuthService {
-    private loginUrl = `${environment.apiBaseUrl}/api/auth/login`;
-    private registerUrl = `${environment.apiBaseUrl}/api/auth/register`;
+    private loginUrl = `${environment.apiBaseUrl}/api/Auth/login`;
+    private registerUrl = `${environment.apiBaseUrl}/api/Auth/register`;
 
     // ── Forgot-password endpoints (replace with your actual paths) ──
-    private forgotPasswordUrl = `${environment.apiBaseUrl}/api/auth/forgot-password`; // TODO: replace
-    private verifyCodeUrl = `${environment.apiBaseUrl}/api/auth/verify-otp`;     // TODO: replace
-    private resetPasswordUrl = `${environment.apiBaseUrl}/api/auth/reset-password`;  // TODO: replace
+    private forgotPasswordUrl = `${environment.apiBaseUrl}/api/Auth/forgot-password`; // TODO: replace
+    private verifyCodeUrl = `${environment.apiBaseUrl}/api/Auth/verify-otp`;     // TODO: replace
+    private resetPasswordUrl = `${environment.apiBaseUrl}/api/Auth/reset-password`;  // TODO: replace
 
     private currentUserSubject = new BehaviorSubject<any>(null);
     public currentUser$ = this.currentUserSubject.asObservable();

@@ -65,7 +65,7 @@ export class LoginComponent {
 
   private redirectBasedOnRole(roleId: number) {
     if (roleId === 2) {
-      this.router.navigate(['/founder-dashboard']);
+      this.router.navigate(['/founder/dashboard']);
     } else if (roleId === 3) {
       this.router.navigate(['/investor-dashboard']);
     } else {

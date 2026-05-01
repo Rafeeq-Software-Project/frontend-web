@@ -291,11 +291,12 @@
   flex-grow: 1;
 }
 
-.card-footer {
-  margin-top: 32px;
-  padding-top: 24px;
-  border-top: 1px solid var(--glass-border);
-}
+  /* 
+  .card-footer {
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px solid var(--glass-border);
+  } */
 
 .learn-more {
   display: flex;

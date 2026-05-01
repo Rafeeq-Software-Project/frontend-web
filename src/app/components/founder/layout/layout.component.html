@@ -1,0 +1,68 @@
+<div class="dashboard-wrapper" [class.sidebar-closed]="!isSidebarOpen" [class.dark-mode]="isDarkMode">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <img src="assets/logo-1.webp" alt="Rafeeq">
+                <span>Rafeeq</span>
+            </div>
+            <button class="mobile-close" (click)="toggleSidebar()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <nav class="sidebar-nav">
+            <a routerLink="/founder/dashboard" routerLinkActive="active" class="nav-item">
+                <i class="fas fa-th-large"></i>
+                <span>Dashboard</span>
+            </a>
+            <a routerLink="/founder/projects" routerLinkActive="active" class="nav-item">
+                <i class="fas fa-rocket"></i>
+                <span>Projects</span>
+            </a>
+            <a routerLink="/founder/archive" routerLinkActive="active" class="nav-item">
+                <i class="fas fa-archive"></i>
+                <span>Archive</span>
+            </a>
+            <div class="nav-spacer"></div>
+            <a routerLink="/founder/settings" routerLinkActive="active" class="nav-item">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="user-brief" *ngIf="profile">
+                <img [src]="profile.profilePictureUrl || 'assets/default-avatar.png'" alt="User" class="user-avatar">
+                <div class="user-info">
+                    <span class="name">{{ profile.companyName }}</span>
+                    <span class="role">Founder</span>
+                </div>
+            </div>
+            <button class="logout-btn" (click)="logout()">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <header class="top-bar">
+            <button class="sidebar-toggle" (click)="toggleSidebar()">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <div class="header-actions">
+                <!-- Notifications, Profile, etc can go here -->
+                <div class="profile-preview" *ngIf="profile" routerLink="/founder/settings">
+                    <img [src]="profile.profilePictureUrl || 'assets/default-avatar.png'" alt="User">
+                </div>
+            </div>
+        </header>
+
+        <div class="content-body">
+            <router-outlet></router-outlet>
+        </div>
+    </main>
+</div>

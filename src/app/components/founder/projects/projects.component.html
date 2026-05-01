@@ -1,0 +1,31 @@
+<div class="projects-page">
+    <header class="page-header">
+        <div class="header-text">
+            <h1>My Projects</h1>
+            <p>Manage and track all your startup projects.</p>
+        </div>
+        <button class="btn btn-primary create-btn" routerLink="/founder/projects/create">
+            <i class="fas fa-plus"></i>
+            Create New Project
+        </button>
+    </header>
+
+    <div class="projects-container">
+        <!-- Empty State -->
+        <div class="empty-state" *ngIf="projects.length === 0 && !isLoading">
+            <div class="empty-illustration">
+                <i class="fas fa-rocket"></i>
+            </div>
+            <h2>No projects yet</h2>
+            <p>Ready to bring your vision to life? Create your first project to start connecting with investors.</p>
+            <button class="btn btn-primary" routerLink="/founder/projects/create">Get Started</button>
+        </div>
+
+        <!-- Projects Grid -->
+        <div class="projects-grid" *ngIf="projects.length > 0">
+            <div class="project-card" *ngFor="let project of projects">
+                <!-- Card content will go here once API is ready -->
+            </div>
+        </div>
+    </div>
+</div>

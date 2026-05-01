@@ -1,0 +1,117 @@
+<div class="settings-page">
+    <header class="page-header">
+        <h1>Settings</h1>
+        <p>Manage your company profile and account preferences.</p>
+    </header>
+
+    <div class="settings-grid">
+        <!-- Sidebar / Navigation within Settings -->
+        <aside class="settings-sidebar">
+            <nav>
+                <a href="#profile" class="active">Profile Settings</a>
+                <a href="#appearance">Appearance</a>
+            </nav>
+        </aside>
+
+        <!-- Main Settings Content -->
+        <div class="settings-content">
+            <!-- Profile Section -->
+            <section id="profile" class="settings-section card">
+                <h3>Profile Information</h3>
+                
+                <div class="profile-pic-uploader">
+                    <div class="avatar-preview">
+                        <img [src]="profile?.profilePictureUrl || 'assets/default-avatar.png'" alt="Profile">
+                        <div class="upload-overlay">
+                            <label for="pic-upload">
+                                <i class="fas fa-camera"></i>
+                            </label>
+                            <input type="file" id="pic-upload" hidden (change)="onFileSelected($event)">
+                        </div>
+                    </div>
+                    <div class="pic-actions">
+                        <button class="btn btn-outline btn-sm" (click)="deletePicture()" [disabled]="!profile?.profilePictureUrl">
+                            Delete Image
+                        </button>
+                        <p class="hint">JPG or PNG. Max size 2MB.</p>
+                    </div>
+                </div>
+
+                <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="settings-form">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Company Name *</label>
+                            <input type="text" formControlName="companyName" placeholder="e.g. Acme Corp">
+                            <span class="error" *ngIf="profileForm.get('companyName')?.touched && profileForm.get('companyName')?.errors?.['required']">
+                                Company name is required
+                            </span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Industry *</label>
+                            <select formControlName="industry">
+                                <option value="">Select Industry</option>
+                                <option value="Technology">Technology</option>
+                                <option value="Healthcare">Healthcare</option>
+                                <option value="Finance">Finance</option>
+                                <option value="Education">Education</option>
+                                <option value="E-commerce">E-commerce</option>
+                            </select>
+                            <span class="error" *ngIf="profileForm.get('industry')?.touched && profileForm.get('industry')?.errors?.['required']">
+                                Industry is required
+                            </span>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Registration Number</label>
+                            <input type="text" formControlName="companyRegistrationNumber" placeholder="Reg #12345">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Website URL</label>
+                            <input type="url" formControlName="websiteUrl" placeholder="https://company.com">
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label>LinkedIn Profile URL</label>
+                            <input type="url" formControlName="linkedInProfile" placeholder="https://linkedin.com/company/...">
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label>Company Bio</label>
+                            <textarea formControlName="bio" rows="4" placeholder="Briefly describe your vision..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <div class="status-messages">
+                            <span class="success-msg" *ngIf="successMessage">{{ successMessage }}</span>
+                            <span class="error-msg" *ngIf="errorMessage">{{ errorMessage }}</span>
+                        </div>
+                        <button type="submit" class="btn btn-primary" [disabled]="profileForm.invalid || isSaving">
+                            {{ isSaving ? 'Saving...' : 'Save Changes' }}
+                        </button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Appearance Section -->
+            <section id="appearance" class="settings-section card mt-32">
+                <h3>Appearance</h3>
+                <p class="section-desc">Customize how Rafeeq looks for you.</p>
+
+                <div class="setting-item">
+                    <div class="setting-text">
+                        <span class="setting-label">Dark Mode</span>
+                        <p class="setting-desc">Switch between light and dark themes.</p>
+                    </div>
+                    <div class="toggle-switch" (click)="toggleDarkMode()">
+                        <div class="switch-track" [class.active]="isDarkMode">
+                            <div class="switch-thumb"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>

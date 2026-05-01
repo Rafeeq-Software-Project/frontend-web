@@ -1,0 +1,103 @@
+<div class="dashboard-page">
+    <div class="page-header">
+        <div class="header-text">
+            <h1 class="welcome-text">Welcome back, {{ profile?.companyName || 'Founder' }}</h1>
+            <p class="sub-text">Here's what's happening with your projects today.</p>
+        </div>
+        <button class="btn btn-primary create-btn" routerLink="/founder/projects/create">
+            <i class="fas fa-plus"></i>
+            Create New Project
+        </button>
+    </div>
+
+    <!-- Quick Stats -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-icon icon-blue">
+                <i class="fas fa-rocket"></i>
+            </div>
+            <div class="stat-content">
+                <span class="stat-value">0</span>
+                <span class="stat-label">Active Projects</span>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon icon-green">
+                <i class="fas fa-hand-holding-usd"></i>
+            </div>
+            <div class="stat-content">
+                <span class="stat-value">$0</span>
+                <span class="stat-label">Funding Raised</span>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon icon-purple">
+                <i class="fas fa-users"></i>
+            </div>
+            <div class="stat-content">
+                <span class="stat-value">0</span>
+                <span class="stat-label">Total Investors</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="dashboard-content">
+        <!-- Company Profile Card -->
+        <section class="profile-summary-card">
+            <div class="card-header">
+                <h3>Company Profile</h3>
+                <button class="edit-link" routerLink="/founder/settings">Edit Profile</button>
+            </div>
+            
+            <div class="profile-details" *ngIf="profile; else loadingTpl">
+                <div class="profile-main">
+                    <img [src]="profile.profilePictureUrl || 'assets/default-avatar.png'" alt="Logo" class="company-logo">
+                    <div class="company-basic">
+                        <h4>{{ profile.companyName }}</h4>
+                        <span class="industry-badge">{{ profile.industry }}</span>
+                    </div>
+                </div>
+                
+                <p class="bio">{{ profile.bio || 'No bio provided yet. Tell us about your company.' }}</p>
+                
+                <div class="links-grid">
+                    <div class="link-item" *ngIf="profile.websiteUrl">
+                        <i class="fas fa-globe"></i>
+                        <a [href]="profile.websiteUrl" target="_blank">{{ profile.websiteUrl }}</a>
+                    </div>
+                    <div class="link-item" *ngIf="profile.linkedInProfile">
+                        <i class="fab fa-linkedin"></i>
+                        <a [href]="profile.linkedInProfile" target="_blank">LinkedIn Profile</a>
+                    </div>
+                    <div class="link-item" *ngIf="profile.companyRegistrationNumber">
+                        <i class="fas fa-id-card"></i>
+                        <span>Reg: {{ profile.companyRegistrationNumber }}</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- My Projects Preview -->
+        <section class="projects-preview">
+            <div class="card-header">
+                <h3>My Projects</h3>
+                <a routerLink="/founder/projects" class="view-all">View All</a>
+            </div>
+            
+            <div class="empty-projects">
+                <div class="empty-icon">
+                    <i class="fas fa-folder-open"></i>
+                </div>
+                <p>No active projects yet.</p>
+                <button class="btn btn-outline" routerLink="/founder/projects">Start your first project</button>
+            </div>
+        </section>
+    </div>
+</div>
+
+<ng-template #loadingTpl>
+    <div class="loading-state">
+        <div class="spinner"></div>
+        <span>Loading profile information...</span>
+    </div>
+</ng-template>

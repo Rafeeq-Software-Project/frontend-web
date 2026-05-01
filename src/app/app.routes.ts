@@ -7,7 +7,12 @@ import { VerifyYourEmailComponent } from './components/verify-your-email/verify-
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { VerifyCodeComponent } from './components/verify-code/verify-code.component';
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
-import { FounderDashboardComponent } from './components/founder/founder-dashboard/founder-dashboard.component';
+import { FounderLayoutComponent } from './components/founder/layout/layout.component';
+import { DashboardComponent as FounderDashboard } from './components/founder/dashboard/dashboard.component';
+import { ProjectsComponent as FounderProjects } from './components/founder/projects/projects.component';
+import { ArchiveComponent as FounderArchive } from './components/founder/archive/archive.component';
+import { SettingsComponent as FounderSettings } from './components/founder/settings/settings.component';
+import { CreateProjectComponent } from './components/founder/create-project/create-project.component';
 import { InvestorDashboardComponent } from './components/investor/investor-dashboard/investor-dashboard.component';
 import { AuthGuard } from './guards/auth.guard';
 
@@ -23,12 +28,22 @@ export const routes: Routes = [
     { path: 'verify-code', component: VerifyCodeComponent },
     { path: 'reset-password', component: ResetPasswordComponent },
 
+    // ── Founder System ──
     {
-        path: 'founder-dashboard',
-        component: FounderDashboardComponent,
+        path: 'founder',
+        component: FounderLayoutComponent,
         canActivate: [AuthGuard],
-        data: { roles: [2] }
+        data: { roles: [2] },
+        children: [
+            { path: 'dashboard', component: FounderDashboard },
+            { path: 'projects', component: FounderProjects },
+            { path: 'archive', component: FounderArchive },
+            { path: 'settings', component: FounderSettings },
+            { path: 'projects/create', component: CreateProjectComponent },
+            { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
+        ]
     },
+
     {
         path: 'investor-dashboard',
         component: InvestorDashboardComponent,

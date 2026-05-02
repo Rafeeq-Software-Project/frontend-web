@@ -1,0 +1,388 @@
+:host {
+    --df-primary: #3b82f6;
+    --df-primary-rgb: 59, 130, 246;
+    --df-accent: #10b981;
+    --df-warning: #f59e0b;
+    --df-danger: #ef4444;
+    --df-surface: #ffffff;
+    --df-border: #e2e8f0;
+    --df-text: #1e293b;
+    --df-text-muted: #64748b;
+    --df-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.04), 0 10px 15px -3px rgba(0, 0, 0, 0.04);
+    --df-radius: 20px;
+    --df-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+:host-context(.dark-mode) {
+    --df-surface: rgba(30, 41, 59, 0.8);
+    --df-border: rgba(255, 255, 255, 0.08);
+    --df-text: #f1f5f9;
+    --df-text-muted: #94a3b8;
+    --df-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+}
+
+.drafts-page {
+    animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ── Page Header ── */
+.page-header {
+    margin-bottom: 2.5rem;
+}
+
+.page-header h1 {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--df-text);
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.draft-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 28px;
+    height: 28px;
+    padding: 0 8px;
+    border-radius: 100px;
+    background: rgba(var(--df-primary-rgb), 0.1);
+    color: var(--df-primary);
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+.page-header p {
+    color: var(--df-text-muted);
+    font-size: 1.05rem;
+    line-height: 1.5;
+}
+
+/* ── Loading State ── */
+.loading-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 5rem 2rem;
+    color: var(--df-text-muted);
+    gap: 1.5rem;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(var(--df-primary-rgb), 0.1);
+    border-top-color: var(--df-primary);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ── Empty State ── */
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: var(--df-surface);
+    border-radius: var(--df-radius);
+    padding: 5rem 2.5rem;
+    border: 1px solid var(--df-border);
+    max-width: 520px;
+    margin: 2rem auto;
+    box-shadow: var(--df-shadow);
+}
+
+.empty-illustration {
+    width: 100px;
+    height: 100px;
+    background: rgba(var(--df-primary-rgb), 0.06);
+    color: var(--df-primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.75rem;
+    margin-bottom: 1.75rem;
+}
+
+.empty-state h2 {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: var(--df-text);
+    margin-bottom: 0.75rem;
+}
+
+.empty-state p {
+    color: var(--df-text-muted);
+    font-size: 1rem;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+    max-width: 380px;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.75rem;
+    border-radius: 14px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    border: none;
+    transition: var(--df-transition);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--df-primary), #2563eb);
+    color: white;
+    box-shadow: 0 8px 20px -5px rgba(var(--df-primary-rgb), 0.35);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 25px -5px rgba(var(--df-primary-rgb), 0.5);
+}
+
+/* ── Drafts List ── */
+.drafts-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.draft-card {
+    display: flex;
+    background: var(--df-surface);
+    border: 1px solid var(--df-border);
+    border-radius: var(--df-radius);
+    overflow: hidden;
+    box-shadow: var(--df-shadow);
+    transition: var(--df-transition);
+    backdrop-filter: blur(12px);
+}
+
+.draft-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 30px -10px rgba(0, 0, 0, 0.08);
+}
+
+/* Status Bar (left edge accent) */
+.draft-status-bar {
+    width: 5px;
+    flex-shrink: 0;
+}
+
+.draft-status-bar.status-pending {
+    background: linear-gradient(180deg, var(--df-warning), #d97706);
+}
+
+.draft-status-bar.status-approved {
+    background: linear-gradient(180deg, var(--df-accent), #059669);
+}
+
+.draft-status-bar.status-rejected {
+    background: linear-gradient(180deg, var(--df-danger), #dc2626);
+}
+
+/* Card Content */
+.draft-content {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 1.75rem 2rem;
+    gap: 2rem;
+}
+
+.draft-info {
+    flex: 1;
+}
+
+.draft-header-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.875rem;
+    flex-wrap: wrap;
+}
+
+/* Status Pill */
+.status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.3rem 0.875rem;
+    border-radius: 100px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.status-pill.status-pending {
+    background: rgba(245, 158, 11, 0.1);
+    color: #d97706;
+    border: 1px solid rgba(245, 158, 11, 0.2);
+}
+
+.status-pill.status-approved {
+    background: rgba(16, 185, 129, 0.1);
+    color: #059669;
+    border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.status-pill.status-rejected {
+    background: rgba(239, 68, 68, 0.1);
+    color: #dc2626;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.draft-date {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.8rem;
+    color: var(--df-text-muted);
+}
+
+.draft-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--df-text);
+    margin: 0 0 0.5rem;
+    letter-spacing: -0.3px;
+}
+
+/* Rejection Notice */
+.rejection-notice {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+    padding: 0.75rem 1rem;
+    background: rgba(239, 68, 68, 0.05);
+    border: 1px solid rgba(239, 68, 68, 0.12);
+    border-radius: 12px;
+    color: var(--df-danger);
+    font-size: 0.85rem;
+    line-height: 1.5;
+}
+
+.rejection-notice i {
+    margin-top: 2px;
+    flex-shrink: 0;
+}
+
+/* Original Project Link */
+.draft-original {
+    flex-shrink: 0;
+    min-width: 220px;
+}
+
+.original-label {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--df-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.625rem;
+}
+
+.original-card {
+    padding: 1rem 1.25rem;
+    background: rgba(var(--df-primary-rgb), 0.03);
+    border: 1px solid rgba(var(--df-primary-rgb), 0.1);
+    border-radius: 14px;
+    cursor: pointer;
+    transition: var(--df-transition);
+}
+
+.original-card:hover {
+    background: rgba(var(--df-primary-rgb), 0.06);
+    border-color: rgba(var(--df-primary-rgb), 0.2);
+    transform: translateY(-1px);
+}
+
+.original-name {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--df-text);
+    margin-bottom: 0.5rem;
+}
+
+.original-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+}
+
+.original-status {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.original-status.status-pending {
+    color: #d97706;
+}
+
+.original-status.status-approved {
+    color: #059669;
+}
+
+.original-status.status-rejected {
+    color: #dc2626;
+}
+
+.original-goal {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--df-primary);
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+    .draft-content {
+        flex-direction: column;
+        padding: 1.25rem 1.5rem;
+        gap: 1.25rem;
+    }
+
+    .draft-original {
+        width: 100%;
+        min-width: unset;
+    }
+
+    .page-header h1 {
+        font-size: 1.5rem;
+    }
+}

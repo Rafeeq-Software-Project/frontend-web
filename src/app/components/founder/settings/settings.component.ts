@@ -130,7 +130,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
     }
   }
 
-  toggleDarkMode(): void {
-    this.themeService.toggleTheme();
+  toggleDarkMode(event: MouseEvent): void {
+    this.themeService.toggleTheme(event);
   }
 }

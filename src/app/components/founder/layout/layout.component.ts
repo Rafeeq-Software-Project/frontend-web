@@ -1,8 +1,9 @@
-import { Component, OnInit, OnDestroy, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, OnInit, OnDestroy, Inject, PLATFORM_ID, inject } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { ThemeService } from '../../../services/theme.service';
 import { FounderService, FounderProfile } from '../../../services/founder.service';
+import { AuthService } from '../../../services/auth.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -17,6 +18,7 @@ export class FounderLayoutComponent implements OnInit, OnDestroy {
   isDarkMode = false;
   profile: FounderProfile | null = null;
   private themeSub!: Subscription;
+  private authService = inject(AuthService);
 
   constructor(
     private themeService: ThemeService,
@@ -53,8 +55,6 @@ export class FounderLayoutComponent implements OnInit, OnDestroy {
   }
 
   logout(): void {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    this.router.navigate(['/login']);
+    this.authService.logout();
   }
 }

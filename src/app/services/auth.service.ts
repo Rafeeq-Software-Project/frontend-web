@@ -1,9 +1,10 @@
-import { Injectable } from '@angular/core';
+import { Injectable, PLATFORM_ID, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject, tap } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { jwtDecode } from 'jwt-decode';
 import { Router } from '@angular/router';
+import { isPlatformBrowser } from '@angular/common';
 
 export interface AuthResponse {
     accessToken: string;
@@ -27,15 +28,21 @@ export class AuthService {
     private registerUrl = `${environment.apiBaseUrl}/api/Auth/register`;
 
     // ── Forgot-password endpoints (replace with your actual paths) ──
-    private forgotPasswordUrl = `${environment.apiBaseUrl}/api/Auth/forgot-password`; // TODO: replace
-    private verifyCodeUrl = `${environment.apiBaseUrl}/api/Auth/verify-otp`;     // TODO: replace
-    private resetPasswordUrl = `${environment.apiBaseUrl}/api/Auth/reset-password`;  // TODO: replace
+    private forgotPasswordUrl = `${environment.apiBaseUrl}/api/Auth/forgot-password`; 
+    private verifyCodeUrl = `${environment.apiBaseUrl}/api/Auth/verify-otp`;     
+    private resetPasswordUrl = `${environment.apiBaseUrl}/api/Auth/reset-password`;  
 
     private currentUserSubject = new BehaviorSubject<any>(null);
     public currentUser$ = this.currentUserSubject.asObservable();
 
-    constructor(private http: HttpClient, private router: Router) {
-        this.loadUserFromStorage();
+    constructor(
+        private http: HttpClient, 
+        private router: Router,
+        @Inject(PLATFORM_ID) private platformId: any
+    ) {
+        if (isPlatformBrowser(this.platformId)) {
+            this.loadUserFromStorage();
+        }
     }
 
     public login(credentials: any): Observable<AuthResponse> {
@@ -49,13 +56,17 @@ export class AuthService {
     }
 
     private handleAuthentication(response: AuthResponse) {
-        localStorage.setItem('accessToken', response.accessToken);
-        localStorage.setItem('refreshToken', response.refreshToken);
-        localStorage.setItem('userData', JSON.stringify(response));
+        if (isPlatformBrowser(this.platformId)) {
+            localStorage.setItem('accessToken', response.accessToken);
+            localStorage.setItem('refreshToken', response.refreshToken);
+            localStorage.setItem('userData', JSON.stringify(response));
+        }
         this.currentUserSubject.next(response);
     }
 
     private loadUserFromStorage() {
+        if (!isPlatformBrowser(this.platformId)) return;
+
         const userData = localStorage.getItem('userData');
         if (userData) {
             const user = JSON.parse(userData);
@@ -68,14 +79,18 @@ export class AuthService {
     }
 
     public logout() {
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('refreshToken');
-        localStorage.removeItem('userData');
+        if (isPlatformBrowser(this.platformId)) {
+            localStorage.removeItem('accessToken');
+            localStorage.removeItem('refreshToken');
+            localStorage.removeItem('userData');
+        }
         this.currentUserSubject.next(null);
         this.router.navigate(['/login']);
     }
 
     public isLoggedIn(): boolean {
+        if (!isPlatformBrowser(this.platformId)) return false;
+
         const userData = localStorage.getItem('userData');
         if (!userData) return false;
 
@@ -89,6 +104,8 @@ export class AuthService {
     }
 
     public getRole(): string | null {
+        if (!isPlatformBrowser(this.platformId)) return null;
+
         const accessToken = localStorage.getItem('accessToken');
         if (!accessToken) return null;
 
@@ -101,6 +118,8 @@ export class AuthService {
     }
 
     public getRoleId(): number | null {
+        if (!isPlatformBrowser(this.platformId)) return null;
+
         const userData = localStorage.getItem('userData');
         if (!userData) return null;
         return JSON.parse(userData).roleId;
@@ -115,7 +134,6 @@ export class AuthService {
     }
 
     public resetPassword(resetToken: string, newPassword: string, confirmPassword: string): Observable<any> {
-        return this.http.post(this.resetPasswordUrl, { resetToken, newPassword, confirmPassword }
-        );
+        return this.http.post(this.resetPasswordUrl, { resetToken, newPassword, confirmPassword });
     }
 }

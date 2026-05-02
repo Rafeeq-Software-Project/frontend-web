@@ -31,7 +31,7 @@
   overflow: hidden;
   display: flex;
   align-items: center;
-  transition: background 0.5s ease;
+  transition: background 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Base Styles */
@@ -207,8 +207,9 @@
 }
 
 :host-context(.dark-mode) .role-card:hover {
-  background: #1e293b;
-  box-shadow: 0 20px 40px -20px var(--card-glow);
+  background: rgba(30, 41, 59, 0.95);
+  box-shadow: 0 0 40px rgba(59, 130, 246, 0.2), 0 20px 40px -20px var(--card-glow);
+  border-color: rgba(59, 130, 246, 0.5);
 }
 
 /* Shimmer Effect */
@@ -232,11 +233,15 @@
 
 @keyframes shimmer {
   0% {
-    background-position: -125% -125%;
+    background-position: -150% -150%;
+  }
+
+  50% {
+    background-position: 0% 0%;
   }
 
   100% {
-    background-position: 125% 125%;
+    background-position: 150% 150%;
   }
 }
 

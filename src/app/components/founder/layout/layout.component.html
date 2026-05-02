@@ -20,10 +20,14 @@
                 <i class="fas fa-rocket"></i>
                 <span>Projects</span>
             </a>
-            <a routerLink="/founder/archive" routerLinkActive="active" class="nav-item">
+            <a routerLink="/founder/drafts" routerLinkActive="active" class="nav-item">
+                <i class="fas fa-file-alt"></i>
+                <span>Drafts</span>
+            </a>
+            <!-- <a routerLink="/founder/archive" routerLinkActive="active" class="nav-item">
                 <i class="fas fa-archive"></i>
                 <span>Archive</span>
-            </a>
+            </a> -->
             <div class="nav-spacer"></div>
             <a routerLink="/founder/settings" routerLinkActive="active" class="nav-item">
                 <i class="fas fa-cog"></i>
@@ -52,7 +56,7 @@
             <button class="sidebar-toggle" (click)="toggleSidebar()">
                 <i class="fas fa-bars"></i>
             </button>
-            
+
             <div class="header-actions">
                 <!-- Notifications, Profile, etc can go here -->
                 <div class="profile-preview" *ngIf="profile" routerLink="/founder/settings">

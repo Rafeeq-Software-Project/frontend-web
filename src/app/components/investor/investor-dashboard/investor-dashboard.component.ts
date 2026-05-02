@@ -167,8 +167,8 @@ export class InvestorDashboardComponent implements OnInit {
     });
   }
 
-  toggleTheme() {
-    this.themeService.toggleTheme();
+  toggleTheme(event: MouseEvent) {
+    this.themeService.toggleTheme(event);
   }
 
   openMobileMenu() {

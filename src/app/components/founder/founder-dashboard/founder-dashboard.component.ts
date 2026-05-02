@@ -23,8 +23,8 @@ export class FounderDashboardComponent {
   isMobileMenuOpen = false;
   currentView: 'dashboard' | 'projects' | 'messages' = 'dashboard';
 
-  toggleTheme() {
-    this.themeService.toggleTheme();
+  toggleTheme(event: MouseEvent) {
+    this.themeService.toggleTheme(event);
   }
 
   openMobileMenu() {

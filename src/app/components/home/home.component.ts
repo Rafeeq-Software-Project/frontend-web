@@ -32,8 +32,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.themeSub?.unsubscribe();
   }
 
-  toggleTheme(): void {
-    this.themeService.toggleTheme();
+  toggleTheme(event: MouseEvent): void {
+    this.themeService.toggleTheme(event);
   }
 
   @HostListener('window:scroll', [])

@@ -1,17 +1,48 @@
 <div class="create-project-container" @fadeInUp>
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
     <div class="page-header">
         <div class="header-content">
             <button class="back-btn" routerLink="/founder/projects">
                 <i class="fas fa-arrow-left"></i>
             </button>
             <div class="header-text">
-                <h1>Create New Project</h1>
-                <p>Fill in the details below to launch your next initiative.</p>
+                <h1>{{ isEditMode ? 'Edit Project' : 'Create New Project' }}</h1>
+                <p>{{ isEditMode ? 'Update the details below to reflect your latest progress.' : 'Fill in the details below to launch your next initiative.' }}</p>
             </div>
         </div>
     </div>
 
-    <div class="form-wrapper">
+    <div *ngIf="isInitialLoading" class="initial-loading">
+        <div class="spinner large"></div>
+        <p>Loading project details...</p>
+    </div>
+
+    <!-- Progress Tracker -->
+    <div class="progress-tracker" *ngIf="!isInitialLoading">
+        <div class="step" [class.active]="currentStep >= 1" [class.completed]="currentStep > 1">
+            <div class="step-icon">
+                <i class="fas" [class.fa-info-circle]="currentStep <= 1" [class.fa-check]="currentStep > 1"></i>
+            </div>
+            <span>Basic Info</span>
+        </div>
+        <div class="progress-line" [class.active]="currentStep > 1"></div>
+        <div class="step" [class.active]="currentStep >= 2" [class.completed]="currentStep > 2">
+            <div class="step-icon">
+                <i class="fas" [class.fa-hand-holding-usd]="currentStep <= 2" [class.fa-check]="currentStep > 2"></i>
+            </div>
+            <span>Financials</span>
+        </div>
+        <div class="progress-line" [class.active]="currentStep > 2"></div>
+        <div class="step" [class.active]="currentStep >= 3" [class.completed]="currentStep > 3">
+            <div class="step-icon">
+                <i class="fas fa-calendar-alt"></i>
+            </div>
+            <span>Timeline</span>
+        </div>
+    </div>
+
+    <div class="form-wrapper" *ngIf="!isInitialLoading">
         <form [formGroup]="projectForm" (ngSubmit)="onSubmit()" class="project-form">
             
             <!-- Success/Error Messages -->
@@ -25,122 +56,132 @@
                 {{ errorMessage }}
             </div>
 
-            <!-- Section 1: Basic Information -->
-            <div class="form-section">
-                <div class="section-header">
-                    <i class="fas fa-info-circle"></i>
-                    <h2>Basic Information</h2>
-                </div>
-                <div class="section-content">
-                    <div class="form-group" [class.error]="isFieldInvalid('name')">
-                        <label for="name">Project Name</label>
-                        <div class="input-wrapper">
-                            <i class="fas fa-rocket input-icon"></i>
-                            <input type="text" id="name" formControlName="name" placeholder="e.g. GreenTech Solar Expansion">
-                        </div>
-                        <span class="error-text" *ngIf="isFieldInvalid('name')">
-                            Project name is required (min 3 chars).
-                        </span>
+            <div [@stepAnimation]="currentStep" class="step-container">
+                <!-- Step 1: Basic Information -->
+                <div *ngIf="currentStep === 1" class="form-step">
+                    <div class="section-header">
+                        <i class="fas fa-info-circle"></i>
+                        <h2>Basic Information</h2>
                     </div>
-
-                    <div class="form-group" [class.error]="isFieldInvalid('category')">
-                        <label for="category">Category</label>
-                        <div class="input-wrapper">
-                            <i class="fas fa-tag input-icon"></i>
-                            <select id="category" formControlName="category">
-                                <option value="" disabled selected>Select a category</option>
-                                <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
-                            </select>
+                    <div class="section-content">
+                        <div class="form-group" [class.error]="isFieldInvalid('name')">
+                            <label for="name">Project Name</label>
+                            <div class="input-wrapper">
+                                <i class="fas fa-rocket input-icon"></i>
+                                <input type="text" id="name" formControlName="name" placeholder="e.g. GreenTech Solar Expansion">
+                            </div>
+                            <span class="error-text" *ngIf="isFieldInvalid('name')">
+                                Project name is required (min 3 chars).
+                            </span>
                         </div>
-                        <span class="error-text" *ngIf="isFieldInvalid('category')">
-                            Please select a category.
-                        </span>
-                    </div>
 
-                    <div class="form-group full-width" [class.error]="isFieldInvalid('description')">
-                        <label for="description">Project Description</label>
-                        <textarea id="description" formControlName="description" rows="4" 
-                            placeholder="Describe your project, its goals, and impact..."></textarea>
-                        <span class="error-text" *ngIf="isFieldInvalid('description')">
-                            Description is required (min 20 chars).
-                        </span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Section 2: Financial Info -->
-            <div class="form-section">
-                <div class="section-header">
-                    <i class="fas fa-hand-holding-usd"></i>
-                    <h2>Financial Info</h2>
-                </div>
-                <div class="section-content grid-2">
-                    <div class="form-group" [class.error]="isFieldInvalid('fundingGoal')">
-                        <label for="fundingGoal">Funding Goal ($)</label>
-                        <div class="input-wrapper">
-                            <i class="fas fa-dollar-sign input-icon"></i>
-                            <input type="number" id="fundingGoal" formControlName="fundingGoal" placeholder="0.00">
+                        <div class="form-group" [class.error]="isFieldInvalid('category')">
+                            <label for="category">Category</label>
+                            <div class="input-wrapper">
+                                <i class="fas fa-tag input-icon"></i>
+                                <select id="category" formControlName="category">
+                                    <option value="" disabled selected>Select a category</option>
+                                    <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+                                </select>
+                            </div>
+                            <span class="error-text" *ngIf="isFieldInvalid('category')">
+                                Please select a category.
+                            </span>
                         </div>
-                        <span class="error-text" *ngIf="isFieldInvalid('fundingGoal')">
-                            Please enter a positive funding goal.
-                        </span>
-                    </div>
 
-                    <div class="form-group" [class.error]="isFieldInvalid('useOfFunds')">
-                        <label for="useOfFunds">Use of Funds</label>
-                        <div class="input-wrapper">
-                            <i class="fas fa-chart-pie input-icon"></i>
-                            <input type="text" id="useOfFunds" formControlName="useOfFunds" placeholder="e.g. R&D, Marketing, Manufacturing">
+                        <div class="form-group full-width" [class.error]="isFieldInvalid('description')">
+                            <label for="description">Project Description</label>
+                            <textarea id="description" formControlName="description" rows="4" 
+                                placeholder="Describe your project, its goals, and impact..."></textarea>
+                            <span class="error-text" *ngIf="isFieldInvalid('description')">
+                                Description is required (min 20 chars).
+                            </span>
                         </div>
-                        <span class="error-text" *ngIf="isFieldInvalid('useOfFunds')">
-                            Explain how the funds will be used.
-                        </span>
                     </div>
                 </div>
-            </div>
 
-            <!-- Section 3: Timeline -->
-            <div class="form-section">
-                <div class="section-header">
-                    <i class="fas fa-calendar-alt"></i>
-                    <h2>Timeline</h2>
-                </div>
-                <div class="section-content grid-2">
-                    <div class="form-group" [class.error]="isFieldInvalid('startDate')">
-                        <label for="startDate">Start Date</label>
-                        <div class="input-wrapper">
-                            <i class="fas fa-calendar-plus input-icon"></i>
-                            <input type="date" id="startDate" formControlName="startDate">
-                        </div>
-                        <span class="error-text" *ngIf="isFieldInvalid('startDate')">
-                            Start date is required.
-                        </span>
+                <!-- Step 2: Financial Info -->
+                <div *ngIf="currentStep === 2" class="form-step">
+                    <div class="section-header">
+                        <i class="fas fa-hand-holding-usd"></i>
+                        <h2>Financial Info</h2>
                     </div>
-
-                    <div class="form-group" [class.error]="isFieldInvalid('endDate') || projectForm.errors?.['dateRangeInvalid']">
-                        <label for="endDate">End Date</label>
-                        <div class="input-wrapper">
-                            <i class="fas fa-calendar-check input-icon"></i>
-                            <input type="date" id="endDate" formControlName="endDate">
+                    <div class="section-content grid-2">
+                        <div class="form-group" [class.error]="isFieldInvalid('fundingGoal')">
+                            <label for="fundingGoal">Funding Goal ($)</label>
+                            <div class="input-wrapper">
+                                <i class="fas fa-dollar-sign input-icon"></i>
+                                <input type="number" id="fundingGoal" formControlName="fundingGoal" placeholder="0.00">
+                            </div>
+                            <span class="error-text" *ngIf="isFieldInvalid('fundingGoal')">
+                                Please enter a positive funding goal.
+                            </span>
                         </div>
-                        <span class="error-text" *ngIf="isFieldInvalid('endDate')">
-                            End date is required.
-                        </span>
-                        <span class="error-text" *ngIf="projectForm.errors?.['dateRangeInvalid'] && !isFieldInvalid('endDate')">
-                            End date must be after start date.
-                        </span>
+
+                        <div class="form-group" [class.error]="isFieldInvalid('useOfFunds')">
+                            <label for="useOfFunds">Use of Funds</label>
+                            <div class="input-wrapper">
+                                <i class="fas fa-chart-pie input-icon"></i>
+                                <input type="text" id="useOfFunds" formControlName="useOfFunds" placeholder="e.g. R&D, Marketing, Manufacturing">
+                            </div>
+                            <span class="error-text" *ngIf="isFieldInvalid('useOfFunds')">
+                                Explain how the funds will be used.
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3: Timeline -->
+                <div *ngIf="currentStep === 3" class="form-step">
+                    <div class="section-header">
+                        <i class="fas fa-calendar-alt"></i>
+                        <h2>Timeline</h2>
+                    </div>
+                    <div class="section-content grid-2">
+                        <div class="form-group" [class.error]="isFieldInvalid('startDate')">
+                            <label for="startDate">Start Date</label>
+                            <div class="input-wrapper">
+                                <i class="fas fa-calendar-plus input-icon"></i>
+                                <input type="date" id="startDate" formControlName="startDate">
+                            </div>
+                            <span class="error-text" *ngIf="isFieldInvalid('startDate')">
+                                Start date is required.
+                            </span>
+                        </div>
+
+                        <div class="form-group" [class.error]="isFieldInvalid('endDate') || projectForm.errors?.['dateRangeInvalid']">
+                            <label for="endDate">End Date</label>
+                            <div class="input-wrapper">
+                                <i class="fas fa-calendar-check input-icon"></i>
+                                <input type="date" id="endDate" formControlName="endDate">
+                            </div>
+                            <span class="error-text" *ngIf="isFieldInvalid('endDate')">
+                                End date is required.
+                            </span>
+                            <span class="error-text" *ngIf="projectForm.errors?.['dateRangeInvalid'] && !isFieldInvalid('endDate')">
+                                End date must be after start date.
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>
 
             <div class="form-actions">
-                <button type="button" class="btn btn-secondary" routerLink="/founder/projects" [disabled]="isLoading">
+                <button type="button" class="btn btn-secondary" *ngIf="currentStep === 1" routerLink="/founder/projects" [disabled]="isLoading">
                     Cancel
                 </button>
-                <button type="submit" class="btn btn-primary" [disabled]="isLoading || projectForm.invalid">
-                    <span *ngIf="!isLoading">Create Project</span>
+                <button type="button" class="btn btn-secondary" *ngIf="currentStep > 1" (click)="prevStep()" [disabled]="isLoading">
+                    <i class="fas fa-arrow-left"></i> Previous
+                </button>
+                
+                <button type="button" class="btn btn-primary" *ngIf="currentStep < totalSteps" (click)="nextStep()">
+                    Next Step <i class="fas fa-arrow-right"></i>
+                </button>
+                
+                <button type="submit" class="btn btn-primary" *ngIf="currentStep === totalSteps" [disabled]="isLoading || projectForm.invalid">
+                    <span *ngIf="!isLoading">{{ isEditMode ? 'Update Project' : 'Create Project' }}</span>
                     <span *ngIf="isLoading" class="loader-container">
-                        <span class="spinner"></span> Creating...
+                        <span class="spinner"></span> {{ isEditMode ? 'Updating...' : 'Creating...' }}
                     </span>
                 </button>
             </div>

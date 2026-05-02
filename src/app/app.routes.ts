@@ -13,6 +13,7 @@ import { ProjectsComponent as FounderProjects } from './components/founder/proje
 import { ArchiveComponent as FounderArchive } from './components/founder/archive/archive.component';
 import { SettingsComponent as FounderSettings } from './components/founder/settings/settings.component';
 import { CreateProjectComponent } from './components/founder/create-project/create-project.component';
+import { DraftsComponent } from './components/founder/drafts/drafts.component';
 import { InvestorDashboardComponent } from './components/investor/investor-dashboard/investor-dashboard.component';
 import { AuthGuard } from './guards/auth.guard';
 
@@ -38,8 +39,11 @@ export const routes: Routes = [
             { path: 'dashboard', component: FounderDashboard },
             { path: 'projects', component: FounderProjects },
             { path: 'archive', component: FounderArchive },
+            { path: 'drafts', component: DraftsComponent },
             { path: 'settings', component: FounderSettings },
             { path: 'projects/create', component: CreateProjectComponent },
+            { path: 'projects/:id', loadComponent: () => import('./components/founder/project-details/project-details.component').then(m => m.ProjectDetailsComponent) },
+            { path: 'projects/:id/edit', component: CreateProjectComponent },
             { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
         ]
     },

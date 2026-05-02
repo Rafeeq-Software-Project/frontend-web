@@ -105,7 +105,7 @@
                         <span class="setting-label">Dark Mode</span>
                         <p class="setting-desc">Switch between light and dark themes.</p>
                     </div>
-                    <div class="toggle-switch" (click)="toggleDarkMode()">
+                    <div class="toggle-switch" (click)="toggleDarkMode($event)">
                         <div class="switch-track" [class.active]="isDarkMode">
                             <div class="switch-thumb"></div>
                         </div>

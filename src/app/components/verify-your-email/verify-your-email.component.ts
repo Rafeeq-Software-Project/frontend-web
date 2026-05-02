@@ -1,5 +1,5 @@
-import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, inject, PLATFORM_ID, Inject } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 
@@ -12,14 +12,17 @@ import { AuthService } from '../../services/auth.service';
 })
 export class VerifyYourEmailComponent {
   private authService = inject(AuthService);
+  private platformId = inject(PLATFORM_ID);
+  
   userEmail: string = 'user@example.com';
   isResending = false;
 
   constructor() {
-    // Attempt to get user email from storage or auth service
-    const userData = localStorage.getItem('userData');
-    if (userData) {
-      this.userEmail = JSON.parse(userData).email;
+    if (isPlatformBrowser(this.platformId)) {
+      const userData = localStorage.getItem('userData');
+      if (userData) {
+        this.userEmail = JSON.parse(userData).email;
+      }
     }
   }
 

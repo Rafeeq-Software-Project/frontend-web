@@ -3,11 +3,12 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { ProjectService, DraftResponse } from '../../../services/project.service';
 import { Subscription } from 'rxjs';
+import { ProjectDetailsComponent } from '../project-details/project-details.component';
 
 @Component({
   selector: 'app-drafts',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, ProjectDetailsComponent],
   providers: [DatePipe],
   templateUrl: './drafts.component.html',
   styleUrls: ['./drafts.component.css']
@@ -19,6 +20,17 @@ export class DraftsComponent implements OnInit, OnDestroy {
 
   drafts: DraftResponse[] = [];
   isLoading = true;
+  selectedProjectId: number | null = null;
+
+  openProjectDetails(projectId: number): void {
+    if (projectId > 0) {
+      this.selectedProjectId = projectId;
+    }
+  }
+
+  closeProjectDetails(): void {
+    this.selectedProjectId = null;
+  }
 
   ngOnInit(): void {
     this.projectService.refreshDrafts();
@@ -44,10 +56,11 @@ export class DraftsComponent implements OnInit, OnDestroy {
 
   getStatusClass(status: string): string {
     switch (status.toLowerCase()) {
-      case 'pending': return 'status-pending';
-      case 'approved': return 'status-approved';
-      case 'rejected': return 'status-rejected';
-      default: return 'status-pending';
+      case 'pending': return 'pending';
+      case 'approved': return 'approved';
+      case 'rejected': return 'rejected';
+      case 'draft': return 'draft';
+      default: return 'pending';
     }
   }
 

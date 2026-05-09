@@ -1,0 +1,85 @@
+<div class="profile-page">
+    <header class="page-header">
+        <div class="header-text">
+            <h1>Founder Profile</h1>
+            <p>View your professional presence on Rafeeq.</p>
+        </div>
+        <button class="btn btn-primary edit-btn" routerLink="/founder/settings">
+            <i class="fas fa-edit"></i>
+            Edit Profile
+        </button>
+    </header>
+
+    <div class="profile-container" *ngIf="!isLoading && profile">
+        <!-- Hero Section -->
+        <div class="profile-hero">
+            <div class="hero-accent"></div>
+            <div class="hero-content">
+                <div class="avatar-placeholder">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="hero-text">
+                    <h2>{{ profile.companyName }}</h2>
+                    <span class="industry-badge">{{ profile.industry }}</span>
+                    <div class="hero-meta">
+                        <span *ngIf="profile.companyRegistrationNumber">
+                            <i class="fas fa-id-card"></i> Reg: {{ profile.companyRegistrationNumber }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="profile-grid">
+            <!-- Main Column -->
+            <div class="main-column">
+                <div class="content-card bio-card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-info-circle"></i> About Company</h3>
+                    </div>
+                    <div class="card-body">
+                        <p class="bio-text">{{ profile.bio || 'No bio provided yet.' }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar Column -->
+            <div class="side-column">
+                <div class="content-card links-card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-link"></i> Professional Links</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="link-item" *ngIf="profile.websiteUrl">
+                            <i class="fas fa-globe"></i>
+                            <div class="link-info">
+                                <span class="link-label">Website</span>
+                                <a [href]="profile.websiteUrl" target="_blank" class="link-url">{{ profile.websiteUrl }}</a>
+                            </div>
+                        </div>
+                        <div class="link-item" *ngIf="profile.linkedInProfile">
+                            <i class="fab fa-linkedin"></i>
+                            <div class="link-info">
+                                <span class="link-label">LinkedIn</span>
+                                <a [href]="profile.linkedInProfile" target="_blank" class="link-url">{{ profile.linkedInProfile }}</a>
+                            </div>
+                        </div>
+                        <div class="no-links" *ngIf="!profile.websiteUrl && !profile.linkedInProfile">
+                            <p>No social links added yet.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading State -->
+    <div class="loading-state" *ngIf="isLoading">
+        <div class="loader">
+            <div class="loader-ring"></div>
+            <div class="loader-ring"></div>
+            <div class="loader-ring"></div>
+        </div>
+        <p>Loading profile details...</p>
+    </div>
+</div>

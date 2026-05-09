@@ -99,7 +99,8 @@
 .section-desc { color: #64748b; margin-bottom: 24px; }
 
 /* Profile Pic */
-.profile-pic-uploader {
+/* Profile Header */
+.profile-header-display {
     display: flex;
     align-items: center;
     gap: 24px;
@@ -108,51 +109,30 @@
     border-bottom: 1px solid #f1f5f9;
 }
 
-.dark-mode .profile-pic-uploader { border-color: #334155; }
+.dark-mode .profile-header-display { border-color: #334155; }
 
-.avatar-preview {
-    position: relative;
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    overflow: hidden;
-}
-
-.avatar-preview img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.upload-overlay {
-    position: absolute;
-    inset: 0;
-    background: rgba(0,0,0,0.4);
+.avatar-placeholder-ring {
+    width: 80px;
+    height: 80px;
+    background: #f1f5f9;
+    border: 2px solid #e2e8f0;
+    border-radius: 24px;
     display: flex;
     align-items: center;
     justify-content: center;
-    opacity: 0;
-    transition: opacity 0.2s;
-    cursor: pointer;
+    font-size: 2rem;
+    color: #94a3b8;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
 }
 
-.avatar-preview:hover .upload-overlay {
-    opacity: 1;
+.dark-mode .avatar-placeholder-ring {
+    background: #2d3a4f;
+    border-color: #334155;
+    color: #64748b;
 }
 
-.upload-overlay label {
-    color: white;
-    font-size: 1.5rem;
-    cursor: pointer;
-}
-
-.pic-actions {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.hint { font-size: 0.75rem; color: #94a3b8; }
+.header-info h3 { margin-bottom: 4px !important; }
+.header-info p { font-size: 0.875rem; color: #64748b; margin: 0; }
 
 /* Form Styles */
 .form-grid {

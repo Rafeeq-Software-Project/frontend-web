@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { ProjectService, ProjectResponse } from '../../../services/project.service';
 import { Subscription } from 'rxjs';
+import { ProjectDetailsComponent } from '../project-details/project-details.component';
 
 interface ProjectDisplay extends Partial<ProjectResponse> {
   id: number;
@@ -22,7 +23,7 @@ interface ProjectDisplay extends Partial<ProjectResponse> {
 @Component({
   selector: 'app-founder-projects',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, ProjectDetailsComponent],
   templateUrl: './projects.component.html',
   styleUrls: ['./projects.component.css']
 })
@@ -32,6 +33,17 @@ export class ProjectsComponent implements OnInit, OnDestroy {
 
   projects: ProjectDisplay[] = [];
   isLoading = true;
+  selectedProjectId: number | null = null;
+
+  openProjectDetails(id: number): void {
+    if (id > 0) {
+      this.selectedProjectId = id;
+    }
+  }
+
+  closeProjectDetails(): void {
+    this.selectedProjectId = null;
+  }
 
   ngOnInit(): void {
     this.projectService.refreshProjects();

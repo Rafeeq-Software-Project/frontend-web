@@ -60,7 +60,7 @@ export class MyProjectComponent implements OnInit, OnDestroy {
   }
 
   private mapProjects(apiProjects: ProjectResponse[]): ProjectDisplay[] {
-    const mapped = apiProjects.map(p => ({
+    const mapped: ProjectDisplay[] = apiProjects.map(p => ({
       ...p,
       title: p.name,
       category: p.category,
@@ -88,7 +88,7 @@ export class MyProjectComponent implements OnInit, OnDestroy {
       progress: 0,
       headerClass: '',
       isNew: true
-    });
+    } as ProjectDisplay);
 
     return mapped;
   }

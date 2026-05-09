@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, OnChanges, Input, Output, EventEmitter, SimpleChanges, inject } from '@angular/core';
 import { CommonModule, DatePipe, DecimalPipe } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ProjectService, ProjectResponse } from '../../../services/project.service';
@@ -26,7 +26,10 @@ import { animate, style, transition, trigger } from '@angular/animations';
     ])
   ]
 })
-export class ProjectDetailsComponent implements OnInit {
+export class ProjectDetailsComponent implements OnInit, OnChanges {
+  @Input() projectId?: number;
+  @Output() close = new EventEmitter<void>();
+
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private projectService = inject(ProjectService);
@@ -41,13 +44,26 @@ export class ProjectDetailsComponent implements OnInit {
   notFound = false;
 
   ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id');
-    if (id) {
-      this.loadProject(parseInt(id, 10));
-    } else {
-      this.notFound = true;
-      this.isLoading = false;
+    // If not used as a child component, fallback to route param
+    if (!this.projectId) {
+      const id = this.route.snapshot.paramMap.get('id');
+      if (id) {
+        this.loadProject(parseInt(id, 10));
+      } else {
+        this.notFound = true;
+        this.isLoading = false;
+      }
     }
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['projectId'] && this.projectId) {
+      this.loadProject(this.projectId);
+    }
+  }
+
+  onClose(): void {
+    this.close.emit();
   }
 
   private loadProject(id: number): void {

@@ -8,7 +8,7 @@
         </div>
         <p class="loading-text">Loading your projects<span class="dots"></span></p>
     </div>
-    <p>mve;kmv;pekl</p>
+
 
     <div *ngIf="!isLoading" class="grid-layout">
         <!-- Empty State -->
@@ -72,7 +72,7 @@
             </ng-container>
 
             <!-- New Project Card -->
-            <!-- <ng-container *ngIf="project.isNew">
+            <ng-container *ngIf="project.isNew">
                 <div class="new-card-body">
                     <div class="new-icon-ring">
                         <i class="fas fa-plus"></i>
@@ -80,7 +80,7 @@
                     <h3 class="new-title">Create Project</h3>
                     <p class="new-subtitle">Start a new initiative and find investors</p>
                 </div>
-            </ng-container> -->
+            </ng-container>
 
         </div>
     </div>

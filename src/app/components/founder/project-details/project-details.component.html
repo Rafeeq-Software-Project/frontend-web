@@ -1,228 +1,261 @@
-<!-- Loading State -->
-<div *ngIf="isLoading" class="details-loading" @fadeIn>
-    <div class="loading-pulse">
-        <div class="pulse-circle"></div>
-        <p>Loading project details...</p>
-    </div>
-</div>
-
-<!-- Not Found State -->
-<div *ngIf="notFound && !isLoading" class="not-found-state" @fadeIn>
-    <div class="not-found-content">
-        <div class="not-found-icon">
-            <i class="fas fa-search"></i>
-        </div>
-        <h2>Project Not Found</h2>
-        <p>The project you're looking for doesn't exist or has been removed.</p>
-        <button class="btn btn-primary" routerLink="/founder/projects">
-            <i class="fas fa-arrow-left"></i> Back to Projects
-        </button>
-    </div>
-</div>
-
-<!-- Error State -->
-<div *ngIf="errorMessage && !isLoading && !notFound" class="error-state" @fadeIn>
-    <div class="error-content">
-        <div class="error-icon">
-            <i class="fas fa-exclamation-triangle"></i>
-        </div>
-        <h2>Something went wrong</h2>
-        <p>{{ errorMessage }}</p>
-        <button class="btn btn-primary" routerLink="/founder/projects">
-            <i class="fas fa-arrow-left"></i> Back to Projects
-        </button>
-    </div>
-</div>
-
-<!-- Project Details -->
-<div *ngIf="project && !isLoading" class="project-details-page" @fadeIn>
-
-    <!-- Top Navigation Bar -->
-    <div class="top-nav">
-        <button class="back-btn" routerLink="/founder/projects">
-            <i class="fas fa-arrow-left"></i>
-            <span>Back to Projects</span>
-        </button>
-        <div class="action-buttons">
-            <button class="btn btn-edit" [routerLink]="'/founder/projects/' + project.id + '/edit'">
-                <i class="fas fa-pen"></i>
-                <span>Edit</span>
+<ng-container *ngIf="projectId; else routedView">
+    <div class="modal-overlay" (click)="onClose()" style="z-index: 9999;">
+        <div class="modal-content" (click)="$event.stopPropagation()" style="max-width: 900px; max-height: 90vh; overflow-y: auto; text-align: left; padding: 0; position: relative;">
+            <button (click)="onClose()" style="position: absolute; top: 20px; right: 20px; background: rgba(0,0,0,0.05); border: none; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: var(--pd-text); cursor: pointer; z-index: 10; transition: background 0.2s;">
+                <i class="fas fa-times"></i>
             </button>
-            <button class="btn btn-delete" (click)="confirmDelete()">
-                <i class="fas fa-trash-alt"></i>
-                <span>Delete</span>
+            <div style="padding: 2.5rem;">
+                <ng-container *ngTemplateOutlet="contentTpl"></ng-container>
+            </div>
+        </div>
+    </div>
+</ng-container>
+
+<ng-template #routedView>
+    <ng-container *ngTemplateOutlet="contentTpl"></ng-container>
+</ng-template>
+
+<ng-template #contentTpl>
+    <!-- Loading State -->
+    <div *ngIf="isLoading" class="details-loading" @fadeIn>
+        <div class="loading-pulse">
+            <div class="pulse-circle"></div>
+            <p>Loading project details...</p>
+        </div>
+    </div>
+
+    <!-- Not Found State -->
+    <div *ngIf="notFound && !isLoading" class="not-found-state" @fadeIn>
+        <div class="not-found-content">
+            <div class="not-found-icon">
+                <i class="fas fa-search"></i>
+            </div>
+            <h2>Project Not Found</h2>
+            <p>The project you're looking for doesn't exist or has been removed.</p>
+            <button class="btn btn-primary" (click)="projectId ? onClose() : null" [routerLink]="!projectId ? '/founder/projects' : null">
+                <i class="fas fa-arrow-left"></i> Back to Projects
             </button>
         </div>
     </div>
 
-    <!-- Hero Section -->
-    <div class="hero-section" @slideIn>
-        <div class="hero-left">
-            <div class="status-pill" [ngClass]="getStatusClass()">
-                <i [class]="getStatusIcon()"></i>
-                {{ project.status }}
+    <!-- Error State -->
+    <div *ngIf="errorMessage && !isLoading && !notFound" class="error-state" @fadeIn>
+        <div class="error-content">
+            <div class="error-icon">
+                <i class="fas fa-exclamation-triangle"></i>
             </div>
-            <h1 class="project-title">{{ project.name }}</h1>
-            <div class="hero-meta">
-                <span class="category-badge">
-                    <i [class]="getCategoryIcon()"></i>
-                    {{ project.category }}
-                </span>
-                <span class="meta-divider">•</span>
-                <span class="meta-item">
-                    <i class="fas fa-calendar-alt"></i>
-                    Created {{ formatDate(project.createdAt) }}
-                </span>
-            </div>
-        </div>
-        <div class="hero-right">
-            <div class="funding-card">
-                <span class="funding-label">Funding Goal</span>
-                <span class="funding-amount">{{ formatCurrency(project.fundingGoal) }}</span>
-            </div>
+            <h2>Something went wrong</h2>
+            <p>{{ errorMessage }}</p>
+            <button class="btn btn-primary" (click)="projectId ? onClose() : null" [routerLink]="!projectId ? '/founder/projects' : null">
+                <i class="fas fa-arrow-left"></i> Back to Projects
+            </button>
         </div>
     </div>
 
-    <!-- Content Grid -->
-    <div class="content-grid">
+    <!-- Project Details -->
+    <div *ngIf="project && !isLoading" class="project-details-page" @fadeIn>
 
-        <!-- Main Column -->
-        <div class="main-column">
+        <!-- Top Navigation Bar (Hidden in modal) -->
+        <div class="top-nav" *ngIf="!projectId">
+            <button class="back-btn" routerLink="/founder/projects">
+                <i class="fas fa-arrow-left"></i>
+                <span>Back to Projects</span>
+            </button>
+            <div class="action-buttons">
+                <button class="btn btn-edit" [routerLink]="'/founder/projects/' + project.id + '/edit'">
+                    <i class="fas fa-pen"></i>
+                    <span>Edit</span>
+                </button>
+                <button class="btn btn-delete" (click)="confirmDelete()">
+                    <i class="fas fa-trash-alt"></i>
+                    <span>Delete</span>
+                </button>
+            </div>
+        </div>
 
-            <!-- Description Card -->
-            <div class="detail-card">
-                <div class="card-header">
-                    <i class="fas fa-align-left"></i>
-                    <h3>Description</h3>
+        <!-- Action buttons inside modal -->
+        <div class="top-nav" *ngIf="projectId" style="justify-content: flex-end; margin-bottom: 1rem;">
+            <div class="action-buttons">
+                <button class="btn btn-edit" [routerLink]="'/founder/projects/' + project.id + '/edit'">
+                    <i class="fas fa-pen"></i>
+                    <span>Edit</span>
+                </button>
+                <button class="btn btn-delete" (click)="confirmDelete()">
+                    <i class="fas fa-trash-alt"></i>
+                    <span>Delete</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Hero Section -->
+        <div class="hero-section" @slideIn>
+            <div class="hero-left">
+                <div class="status-pill" [ngClass]="getStatusClass()">
+                    <i [class]="getStatusIcon()"></i>
+                    {{ project.status }}
                 </div>
-                <div class="card-body">
-                    <p class="description-text">{{ project.description }}</p>
+                <h1 class="project-title">{{ project.name }}</h1>
+                <div class="hero-meta">
+                    <span class="category-badge">
+                        <i [class]="getCategoryIcon()"></i>
+                        {{ project.category }}
+                    </span>
+                    <span class="meta-divider">•</span>
+                    <span class="meta-item">
+                        <i class="fas fa-calendar-alt"></i>
+                        Created {{ formatDate(project.createdAt) }}
+                    </span>
                 </div>
             </div>
-
-            <!-- Use of Funds Card -->
-            <div class="detail-card">
-                <div class="card-header">
-                    <i class="fas fa-chart-pie"></i>
-                    <h3>Use of Funds</h3>
-                </div>
-                <div class="card-body">
-                    <p class="funds-text">{{ project.useOfFunds }}</p>
-                </div>
-            </div>
-
-            <!-- Rejection Reason (only if rejected) -->
-            <div class="detail-card rejection-card" *ngIf="project.rejectionReason">
-                <div class="card-header">
-                    <i class="fas fa-exclamation-circle"></i>
-                    <h3>Rejection Reason</h3>
-                </div>
-                <div class="card-body">
-                    <p class="rejection-text">{{ project.rejectionReason }}</p>
+            <div class="hero-right">
+                <div class="funding-card">
+                    <span class="funding-label">Funding Goal</span>
+                    <span class="funding-amount">{{ formatCurrency(project.fundingGoal) }}</span>
                 </div>
             </div>
         </div>
 
-        <!-- Sidebar Column -->
-        <div class="sidebar-column">
+        <!-- Content Grid -->
+        <div class="content-grid">
 
-            <!-- Timeline Card -->
-            <div class="detail-card timeline-card">
-                <div class="card-header">
-                    <i class="fas fa-clock"></i>
-                    <h3>Timeline</h3>
+            <!-- Main Column -->
+            <div class="main-column">
+
+                <!-- Description Card -->
+                <div class="detail-card">
+                    <div class="card-header">
+                        <i class="fas fa-align-left"></i>
+                        <h3>Description</h3>
+                    </div>
+                    <div class="card-body">
+                        <p class="description-text">{{ project.description }}</p>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <div class="timeline-dates">
-                        <div class="timeline-item">
-                            <span class="timeline-label">Start Date</span>
-                            <span class="timeline-value">{{ formatDate(project.startDate) }}</span>
-                        </div>
-                        <div class="timeline-divider">
-                            <div class="timeline-progress-bar">
-                                <div class="timeline-progress-fill" [style.width.%]="getTimelineProgress()"></div>
+
+                <!-- Use of Funds Card -->
+                <div class="detail-card">
+                    <div class="card-header">
+                        <i class="fas fa-chart-pie"></i>
+                        <h3>Use of Funds</h3>
+                    </div>
+                    <div class="card-body">
+                        <p class="funds-text">{{ project.useOfFunds }}</p>
+                    </div>
+                </div>
+
+                <!-- Rejection Reason (only if rejected) -->
+                <div class="detail-card rejection-card" *ngIf="project.rejectionReason">
+                    <div class="card-header">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <h3>Rejection Reason</h3>
+                    </div>
+                    <div class="card-body">
+                        <p class="rejection-text">{{ project.rejectionReason }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar Column -->
+            <div class="sidebar-column">
+
+                <!-- Timeline Card -->
+                <div class="detail-card timeline-card">
+                    <div class="card-header">
+                        <i class="fas fa-clock"></i>
+                        <h3>Timeline</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="timeline-dates">
+                            <div class="timeline-item">
+                                <span class="timeline-label">Start Date</span>
+                                <span class="timeline-value">{{ formatDate(project.startDate) }}</span>
+                            </div>
+                            <div class="timeline-divider">
+                                <div class="timeline-progress-bar">
+                                    <div class="timeline-progress-fill" [style.width.%]="getTimelineProgress()"></div>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <span class="timeline-label">End Date</span>
+                                <span class="timeline-value">{{ formatDate(project.endDate) }}</span>
                             </div>
                         </div>
-                        <div class="timeline-item">
-                            <span class="timeline-label">End Date</span>
-                            <span class="timeline-value">{{ formatDate(project.endDate) }}</span>
+                        <div class="days-remaining" *ngIf="getDaysRemaining() > 0">
+                            <i class="fas fa-hourglass-half"></i>
+                            <span>{{ getDaysRemaining() }} days remaining</span>
+                        </div>
+                        <div class="days-remaining ended" *ngIf="getDaysRemaining() === 0">
+                            <i class="fas fa-flag-checkered"></i>
+                            <span>Timeline completed</span>
                         </div>
                     </div>
-                    <div class="days-remaining" *ngIf="getDaysRemaining() > 0">
-                        <i class="fas fa-hourglass-half"></i>
-                        <span>{{ getDaysRemaining() }} days remaining</span>
-                    </div>
-                    <div class="days-remaining ended" *ngIf="getDaysRemaining() === 0">
-                        <i class="fas fa-flag-checkered"></i>
-                        <span>Timeline completed</span>
-                    </div>
                 </div>
-            </div>
 
-            <!-- Founder Info Card -->
-            <div class="detail-card founder-card">
-                <div class="card-header">
-                    <i class="fas fa-user"></i>
-                    <h3>Founder</h3>
-                </div>
-                <div class="card-body">
-                    <div class="founder-profile">
-                        <div class="founder-avatar">
-                            <img *ngIf="project.founderProfilePicture" [src]="project.founderProfilePicture"
-                                alt="Founder">
-                            <i *ngIf="!project.founderProfilePicture" class="fas fa-user-circle"></i>
-                        </div>
-                        <div class="founder-info">
-                            <span class="founder-name">{{ project.founderName || '—' }}</span>
-                            <span class="founder-company">{{ project.founderCompany || '—' }}</span>
+                <!-- Founder Info Card -->
+                <div class="detail-card founder-card">
+                    <div class="card-header">
+                        <i class="fas fa-user"></i>
+                        <h3>Founder</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="founder-profile">
+                            <div class="founder-avatar">
+                                <img *ngIf="project.founderProfilePicture" [src]="project.founderProfilePicture"
+                                    alt="Founder">
+                                <i *ngIf="!project.founderProfilePicture" class="fas fa-user-circle"></i>
+                            </div>
+                            <div class="founder-info">
+                                <span class="founder-name">{{ project.founderName || '—' }}</span>
+                                <span class="founder-company">{{ project.founderCompany || '—' }}</span>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Review Info Card -->
-            <div class="detail-card review-card" *ngIf="project.reviewedAt">
-                <div class="card-header">
-                    <i class="fas fa-clipboard-check"></i>
-                    <h3>Review Info</h3>
-                </div>
-                <div class="card-body">
-                    <div class="review-items">
-                        <div class="review-item">
-                            <span class="review-label">Reviewed By</span>
-                            <span class="review-value">{{ project.reviewedByRole || '—' }}</span>
-                        </div>
-                        <div class="review-item">
-                            <span class="review-label">Reviewed At</span>
-                            <span class="review-value">{{ formatDate(project.reviewedAt) }}</span>
-                        </div>
-                        <div class="review-item" *ngIf="project.updatedAt">
-                            <span class="review-label">Last Updated</span>
-                            <span class="review-value">{{ formatDate(project.updatedAt) }}</span>
+                <!-- Review Info Card -->
+                <div class="detail-card review-card" *ngIf="project.reviewedAt">
+                    <div class="card-header">
+                        <i class="fas fa-clipboard-check"></i>
+                        <h3>Review Info</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="review-items">
+                            <div class="review-item">
+                                <span class="review-label">Reviewed By</span>
+                                <span class="review-value">{{ project.reviewedByRole || '—' }}</span>
+                            </div>
+                            <div class="review-item">
+                                <span class="review-label">Reviewed At</span>
+                                <span class="review-value">{{ formatDate(project.reviewedAt) }}</span>
+                            </div>
+                            <div class="review-item" *ngIf="project.updatedAt">
+                                <span class="review-label">Last Updated</span>
+                                <span class="review-value">{{ formatDate(project.updatedAt) }}</span>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-<!-- Delete Confirmation Modal -->
-<div class="modal-overlay" *ngIf="showDeleteModal" (click)="cancelDelete()">
-    <div class="modal-content" (click)="$event.stopPropagation()" @fadeIn>
-        <div class="modal-icon">
-            <i class="fas fa-trash-alt"></i>
-        </div>
-        <h2>Delete Project</h2>
-        <p>Are you sure you want to delete <strong>"{{ project?.name }}"</strong>? This action cannot be undone.</p>
-        <div class="modal-actions">
-            <button class="btn btn-secondary" (click)="cancelDelete()" [disabled]="isDeleting">Cancel</button>
-            <button class="btn btn-danger" (click)="deleteProject()" [disabled]="isDeleting">
-                <span *ngIf="!isDeleting">Delete Project</span>
-                <span *ngIf="isDeleting" class="loader-inline">
-                    <span class="spinner-sm"></span> Deleting...
-                </span>
-            </button>
+    <!-- Delete Confirmation Modal -->
+    <div class="modal-overlay" *ngIf="showDeleteModal" (click)="cancelDelete()" style="z-index: 10000;">
+        <div class="modal-content" (click)="$event.stopPropagation()" @fadeIn>
+            <div class="modal-icon">
+                <i class="fas fa-trash-alt"></i>
+            </div>
+            <h2>Delete Project</h2>
+            <p>Are you sure you want to delete <strong>"{{ project?.name }}"</strong>? This action cannot be undone.</p>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" (click)="cancelDelete()" [disabled]="isDeleting">Cancel</button>
+                <button class="btn btn-danger" (click)="deleteProject()" [disabled]="isDeleting">
+                    <span *ngIf="!isDeleting">Delete Project</span>
+                    <span *ngIf="isDeleting" class="loader-inline">
+                        <span class="spinner-sm"></span> Deleting...
+                    </span>
+                </button>
+            </div>
         </div>
     </div>
-</div>
+</ng-template>

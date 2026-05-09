@@ -14,6 +14,7 @@ import { ArchiveComponent as FounderArchive } from './components/founder/archive
 import { SettingsComponent as FounderSettings } from './components/founder/settings/settings.component';
 import { CreateProjectComponent } from './components/founder/create-project/create-project.component';
 import { DraftsComponent } from './components/founder/drafts/drafts.component';
+import { ProfileComponent as FounderProfile } from './components/founder/profile/profile.component';
 import { InvestorDashboardComponent } from './components/investor/investor-dashboard/investor-dashboard.component';
 import { AuthGuard } from './guards/auth.guard';
 
@@ -40,6 +41,7 @@ export const routes: Routes = [
             { path: 'projects', component: FounderProjects },
             { path: 'archive', component: FounderArchive },
             { path: 'drafts', component: DraftsComponent },
+            { path: 'profile', component: FounderProfile },
             { path: 'settings', component: FounderSettings },
             { path: 'projects/create', component: CreateProjectComponent },
             { path: 'projects/:id', loadComponent: () => import('./components/founder/project-details/project-details.component').then(m => m.ProjectDetailsComponent) },

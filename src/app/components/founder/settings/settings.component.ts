@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FounderService, FounderProfile } from '../../../services/founder.service';
+import { Router } from '@angular/router';
 import { UserService } from '../../../services/user.service';
 import { ThemeService } from '../../../services/theme.service';
 import { Subscription } from 'rxjs';
@@ -28,7 +29,8 @@ export class SettingsComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private founderService: FounderService,
     private userService: UserService,
-    private themeService: ThemeService
+    private themeService: ThemeService,
+    private router: Router
   ) {
     this.profileForm = this.fb.group({
       companyName: ['', [Validators.required]],
@@ -82,9 +84,11 @@ export class SettingsComponent implements OnInit, OnDestroy {
 
     this.founderService.updateProfile(this.profileForm.value).subscribe({
       next: () => {
-        this.successMessage = 'Profile updated successfully!';
+        this.successMessage = 'Profile updated successfully! Opening profile...';
         this.isSaving = false;
-        setTimeout(() => this.successMessage = '', 3000);
+        setTimeout(() => {
+          this.router.navigate(['/founder/profile']);
+        }, 1500);
       },
       error: (err) => {
         this.errorMessage = 'Failed to update profile. Please try again.';
@@ -93,42 +97,9 @@ export class SettingsComponent implements OnInit, OnDestroy {
     });
   }
 
-  onFileSelected(event: any): void {
-    const file: File = event.target.files[0];
-    if (file) {
-      this.isSaving = true;
-      this.userService.uploadProfilePicture(file).subscribe({
-        next: (res) => {
-          this.loadProfile();
-          this.isSaving = false;
-          this.successMessage = 'Profile picture updated!';
-          setTimeout(() => this.successMessage = '', 3000);
-        },
-        error: (err) => {
-          this.errorMessage = 'Failed to upload image.';
-          this.isSaving = false;
-        }
-      });
-    }
-  }
+  // Profile picture logic removed as per user request
 
-  deletePicture(): void {
-    if (confirm('Are you sure you want to delete your profile picture?')) {
-      this.isSaving = true;
-      this.userService.deleteProfilePicture().subscribe({
-        next: () => {
-          this.loadProfile();
-          this.isSaving = false;
-          this.successMessage = 'Profile picture deleted.';
-          setTimeout(() => this.successMessage = '', 3000);
-        },
-        error: (err) => {
-          this.errorMessage = 'Failed to delete image.';
-          this.isSaving = false;
-        }
-      });
-    }
-  }
+
 
   toggleDarkMode(event: MouseEvent): void {
     this.themeService.toggleTheme(event);

@@ -17,23 +17,13 @@
         <div class="settings-content">
             <!-- Profile Section -->
             <section id="profile" class="settings-section card">
-                <h3>Profile Information</h3>
-                
-                <div class="profile-pic-uploader">
-                    <div class="avatar-preview">
-                        <img [src]="profile?.profilePictureUrl || 'assets/default-avatar.png'" alt="Profile">
-                        <div class="upload-overlay">
-                            <label for="pic-upload">
-                                <i class="fas fa-camera"></i>
-                            </label>
-                            <input type="file" id="pic-upload" hidden (change)="onFileSelected($event)">
-                        </div>
+                                <div class="profile-header-display">
+                    <div class="avatar-placeholder-ring">
+                        <i class="fas fa-user"></i>
                     </div>
-                    <div class="pic-actions">
-                        <button class="btn btn-outline btn-sm" (click)="deletePicture()" [disabled]="!profile?.profilePictureUrl">
-                            Delete Image
-                        </button>
-                        <p class="hint">JPG or PNG. Max size 2MB.</p>
+                    <div class="header-info">
+                        <h3>Profile Information</h3>
+                        <p>Your professional details and company vision.</p>
                     </div>
                 </div>
 

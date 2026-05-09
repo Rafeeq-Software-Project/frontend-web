@@ -1,4 +1,6 @@
-<div class="dashboard-wrapper" [class.sidebar-closed]="!isSidebarOpen" [class.dark-mode]="isDarkMode">
+<div class="dashboard-wrapper" [class.sidebar-open]="isSidebarOpen" [class.dark-mode]="isDarkMode">
+    <div class="mobile-overlay" (click)="toggleSidebar()" *ngIf="isSidebarOpen"></div>
+
     <!-- Sidebar -->
     <aside class="sidebar">
         <div class="sidebar-header">

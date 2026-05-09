@@ -18,22 +18,23 @@
         </div>
 
         <!-- Empty State -->
-        <div class="empty-state" *ngIf="drafts.length === 0 && !isLoading" style="margin-top: 40px;">
-            <div class="empty-icon">
+        <div class="empty-state" *ngIf="drafts.length === 0 && !isLoading">
+            <div class="empty-illustration">
                 <i class="fas fa-file-alt"></i>
             </div>
-            <h3>No pending drafts</h3>
-            <p style="margin-bottom: 24px;">When you edit a project, the changes will appear here while waiting for admin review.</p>
-            <button class="btn btn-primary" routerLink="/founder/projects">
+            <h2>No pending drafts</h2>
+            <p>When you edit a project, the changes will appear here while waiting for admin review.</p>
+            <button class="btn-primary" routerLink="/founder/projects">
                 <i class="fas fa-arrow-left"></i> Back to Projects
             </button>
         </div>
+
 
         <!-- Drafts Grid -->
         <div class="grid-layout" *ngIf="drafts.length > 0 && !isLoading">
             <div class="project-card" *ngFor="let draft of drafts; let i = index"
                 [style.animation-delay]="(i * 0.08) + 's'"
-                (click)="openProjectDetails(draft.projectId)"
+                (click)="openDraftDetails(draft)"
                 style="cursor: pointer;">
 
                 <!-- Colored accent stripe at top -->
@@ -46,45 +47,46 @@
                             <span class="status-dot"></span>
                             {{ draft.status | uppercase }}
                         </div>
-                        <span class="category-chip" *ngIf="draft.createdAt">
-                            <i class="fas fa-calendar-alt" style="margin-right: 4px;"></i>
-                            {{ formatDate(draft.createdAt) }}
+                        <span class="category-chip">
+                            {{ draft.category }}
                         </span>
                     </div>
 
                     <!-- Content -->
                     <h3 class="card-title">{{ draft.name }}</h3>
-                    <p class="card-desc" *ngIf="draft.rejectionReason" style="color: var(--danger);">
-                        <i class="fas fa-exclamation-triangle" style="margin-right: 4px;"></i>
-                        {{ draft.rejectionReason }}
-                    </p>
-                    <p class="card-desc" *ngIf="!draft.rejectionReason">
-                        Waiting for admin review. Changes will be published once approved.
-                    </p>
+                    <p class="card-desc">{{ draft.description }}</p>
 
-                    <!-- Original Project Link -->
+                    <!-- Rejection Reason or Waiting Message -->
+                    <div class="draft-info" *ngIf="draft.rejectionReason" style="margin-top: 8px;">
+                        <p class="card-desc" style="color: var(--danger); font-weight: 600;">
+                            <i class="fas fa-exclamation-triangle" style="margin-right: 4px;"></i>
+                            Rejected: {{ draft.rejectionReason }}
+                        </p>
+                    </div>
+
+                    <!-- Comparison Indicator -->
                     <div class="funding-meter" *ngIf="draft.liveProject">
                         <div class="meter-header">
-                            <span class="meter-label">Original Live Project</span>
+                            <span class="meter-label">Modifications to</span>
+                            <span class="meter-pct" style="font-size: 12px; opacity: 0.7;">{{ draft.liveProject.name }}</span>
                         </div>
-                        <div class="meter-amounts" style="margin-top: 4px; display: flex; align-items: center; justify-content: space-between;">
-                            <span class="raised" style="font-size: 14px;">{{ draft.liveProject.name }}</span>
-                            <span class="goal" [ngClass]="getStatusClass(draft.liveProject.status)">{{ draft.liveProject.status | uppercase }}</span>
+                        <div class="meter-track">
+                            <div class="meter-fill" style="width: 100%" [ngClass]="getStatusClass(draft.status)"></div>
                         </div>
                     </div>
 
                     <!-- Footer -->
                     <div class="card-footer">
                         <button class="view-btn">
-                            <span>View Original Details</span>
+                            <span>View Comparison</span>
                             <i class="fas fa-arrow-right"></i>
                         </button>
                     </div>
                 </div>
-
             </div>
         </div>
+
     </div>
 </div>
 
-<app-project-details *ngIf="selectedProjectId" [projectId]="selectedProjectId" (close)="closeProjectDetails()"></app-project-details>
+<app-project-details *ngIf="selectedProjectId" [projectId]="selectedProjectId" [draft]="selectedDraft" (close)="closeProjectDetails()"></app-project-details>

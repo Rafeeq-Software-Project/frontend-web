@@ -9,7 +9,7 @@
         <aside class="settings-sidebar">
             <nav>
                 <a href="#profile" class="active">Profile Settings</a>
-                <a href="#appearance">Appearance</a>
+                <!-- <a href="#appearance">Appearance</a> -->
             </nav>
         </aside>
 
@@ -17,7 +17,7 @@
         <div class="settings-content">
             <!-- Profile Section -->
             <section id="profile" class="settings-section card">
-                                <div class="profile-header-display">
+                <div class="profile-header-display">
                     <div class="avatar-placeholder-ring">
                         <i class="fas fa-user"></i>
                     </div>
@@ -32,11 +32,12 @@
                         <div class="form-group">
                             <label>Company Name *</label>
                             <input type="text" formControlName="companyName" placeholder="e.g. Acme Corp">
-                            <span class="error" *ngIf="profileForm.get('companyName')?.touched && profileForm.get('companyName')?.errors?.['required']">
+                            <span class="error"
+                                *ngIf="profileForm.get('companyName')?.touched && profileForm.get('companyName')?.errors?.['required']">
                                 Company name is required
                             </span>
                         </div>
-                        
+
                         <div class="form-group">
                             <label>Industry *</label>
                             <select formControlName="industry">
@@ -47,7 +48,8 @@
                                 <option value="Education">Education</option>
                                 <option value="E-commerce">E-commerce</option>
                             </select>
-                            <span class="error" *ngIf="profileForm.get('industry')?.touched && profileForm.get('industry')?.errors?.['required']">
+                            <span class="error"
+                                *ngIf="profileForm.get('industry')?.touched && profileForm.get('industry')?.errors?.['required']">
                                 Industry is required
                             </span>
                         </div>
@@ -64,12 +66,14 @@
 
                         <div class="form-group full-width">
                             <label>LinkedIn Profile URL</label>
-                            <input type="url" formControlName="linkedInProfile" placeholder="https://linkedin.com/company/...">
+                            <input type="url" formControlName="linkedInProfile"
+                                placeholder="https://linkedin.com/company/...">
                         </div>
 
                         <div class="form-group full-width">
                             <label>Company Bio</label>
-                            <textarea formControlName="bio" rows="4" placeholder="Briefly describe your vision..."></textarea>
+                            <textarea formControlName="bio" rows="4"
+                                placeholder="Briefly describe your vision..."></textarea>
                         </div>
                     </div>
 

@@ -34,6 +34,31 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   projects: ProjectDisplay[] = [];
   isLoading = true;
   selectedProjectId: number | null = null;
+  currentFilter: 'all' | 'pending' | 'approved' = 'all';
+
+  get filteredProjects(): ProjectDisplay[] {
+    if (this.currentFilter === 'all') {
+      return this.projects;
+    }
+    // Filter projects by status, but always keep the 'New Project' card at the end
+    const filtered = this.projects.filter(p => !p.isNew && p.status === this.currentFilter);
+    const newProjectCard = this.projects.find(p => p.isNew);
+    if (newProjectCard) {
+      filtered.push(newProjectCard);
+    }
+    return filtered;
+  }
+
+  setFilter(filter: 'all' | 'pending' | 'approved'): void {
+    this.currentFilter = filter;
+  }
+
+  getProjectCount(status: string): number {
+    if (status === 'all') return this.projects.filter(p => !p.isNew).length;
+    return this.projects.filter(p => !p.isNew && p.status === status).length;
+  }
+
+
 
   openProjectDetails(id: number): void {
     if (id > 0) {
@@ -62,16 +87,16 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   private mapProjects(apiProjects: ProjectResponse[]): ProjectDisplay[] {
     const mapped: ProjectDisplay[] = apiProjects.map(p => ({
       ...p,
-      title: p.name,
-      category: p.category,
-      categoryClass: this.getCategoryClass(p.category),
-      description: p.description,
-      status: p.status.toLowerCase(),
-      statusLabel: p.status.toUpperCase(),
+      title: p.name || 'Untitled Project',
+      category: p.category || 'Uncategorized',
+      categoryClass: this.getCategoryClass(p.category || ''),
+      description: p.description || '',
+      status: (p.status || 'pending').toLowerCase(),
+      statusLabel: (p.status || 'pending').toUpperCase(),
       raised: 0,
-      goal: p.fundingGoal,
+      goal: p.fundingGoal || 0,
       progress: 0,
-      headerClass: this.getHeaderClass(p.category)
+      headerClass: this.getHeaderClass(p.category || '')
     }));
 
     mapped.push({

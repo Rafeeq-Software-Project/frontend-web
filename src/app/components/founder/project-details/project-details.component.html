@@ -1,7 +1,9 @@
 <ng-container *ngIf="projectId; else routedView">
     <div class="modal-overlay" (click)="onClose()" style="z-index: 9999;">
-        <div class="modal-content" (click)="$event.stopPropagation()" style="max-width: 900px; max-height: 90vh; overflow-y: auto; text-align: left; padding: 0; position: relative;">
-            <button (click)="onClose()" style="position: absolute; top: 20px; right: 20px; background: rgba(0,0,0,0.05); border: none; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: var(--pd-text); cursor: pointer; z-index: 10; transition: background 0.2s;">
+        <div class="modal-content" (click)="$event.stopPropagation()"
+            style="max-width: 900px; max-height: 90vh; overflow-y: auto; text-align: left; padding: 0; position: relative;">
+            <button (click)="onClose()"
+                style="position: absolute; top: 6px; right: 6px; background: rgba(0,0,0,0.05); border: none; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: var(--pd-text); cursor: pointer; z-index: 10; transition: background 0.2s;">
                 <i class="fas fa-times"></i>
             </button>
             <div style="padding: 2.5rem;">
@@ -32,7 +34,8 @@
             </div>
             <h2>Project Not Found</h2>
             <p>The project you're looking for doesn't exist or has been removed.</p>
-            <button class="btn btn-primary" (click)="projectId ? onClose() : null" [routerLink]="!projectId ? '/founder/projects' : null">
+            <button class="btn btn-primary" (click)="projectId ? onClose() : null"
+                [routerLink]="!projectId ? '/founder/projects' : null">
                 <i class="fas fa-arrow-left"></i> Back to Projects
             </button>
         </div>
@@ -46,23 +49,24 @@
             </div>
             <h2>Something went wrong</h2>
             <p>{{ errorMessage }}</p>
-            <button class="btn btn-primary" (click)="projectId ? onClose() : null" [routerLink]="!projectId ? '/founder/projects' : null">
+            <button class="btn btn-primary" (click)="projectId ? onClose() : null"
+                [routerLink]="!projectId ? '/founder/projects' : null">
                 <i class="fas fa-arrow-left"></i> Back to Projects
             </button>
         </div>
     </div>
 
-    <!-- Project Details -->
-    <div *ngIf="project && !isLoading" class="project-details-page" @fadeIn>
+    <!-- Project Details / Comparison -->
+    <div *ngIf="(project || draft) && !isLoading" class="project-details-page" @fadeIn>
 
         <!-- Top Navigation Bar (Hidden in modal) -->
         <div class="top-nav" *ngIf="!projectId">
-            <button class="back-btn" routerLink="/founder/projects">
+            <button class="back-btn" [routerLink]="draft ? '/founder/drafts' : '/founder/projects'">
                 <i class="fas fa-arrow-left"></i>
-                <span>Back to Projects</span>
+                <span>Back to {{ draft ? 'Drafts' : 'Projects' }}</span>
             </button>
-            <div class="action-buttons">
-                <button class="btn btn-edit" [routerLink]="'/founder/projects/' + project.id + '/edit'">
+            <div class="action-buttons" *ngIf="!draft">
+                <button class="btn btn-edit" [routerLink]="'/founder/projects/' + project?.id + '/edit'">
                     <i class="fas fa-pen"></i>
                     <span>Edit</span>
                 </button>
@@ -74,9 +78,9 @@
         </div>
 
         <!-- Action buttons inside modal -->
-        <div class="top-nav" *ngIf="projectId" style="justify-content: flex-end; margin-bottom: 1rem;">
-            <div class="action-buttons">
-                <button class="btn btn-edit" [routerLink]="'/founder/projects/' + project.id + '/edit'">
+        <div class="top-nav" *ngIf="projectId" style="justify-content: flex-end; margin-bottom: 1.5rem;">
+            <div class="action-buttons" *ngIf="!draft">
+                <button class="btn btn-edit" [routerLink]="'/founder/projects/' + project?.id + '/edit'">
                     <i class="fas fa-pen"></i>
                     <span>Edit</span>
                 </button>
@@ -90,103 +94,94 @@
         <!-- Hero Section -->
         <div class="hero-section" @slideIn>
             <div class="hero-left">
-                <div class="status-pill" [ngClass]="getStatusClass()">
-                    <i [class]="getStatusIcon()"></i>
-                    {{ project.status }}
+                <div class="status-pill" [ngClass]="draft ? 'status-pending' : getStatusClass()">
+                    <i [class]="draft ? 'fas fa-pen-nib' : getStatusIcon()"></i>
+                    {{ draft ? 'Draft Modification' : project?.status }}
                 </div>
-                <h1 class="project-title">{{ project.name }}</h1>
-                <div class="hero-meta">
+                <h1 class="project-title">{{ draft ? draft.name : project?.name }}</h1>
+                <div class="hero-meta" *ngIf="!draft">
                     <span class="category-badge">
                         <i [class]="getCategoryIcon()"></i>
-                        {{ project.category }}
+                        {{ project?.category }}
                     </span>
                     <span class="meta-divider">•</span>
                     <span class="meta-item">
                         <i class="fas fa-calendar-alt"></i>
-                        Created {{ formatDate(project.createdAt) }}
+                        Created {{ formatDate(project?.createdAt || null) }}
+                    </span>
+                </div>
+                <div class="hero-meta" *ngIf="draft">
+                    <span class="category-badge">
+                        <i class="fas fa-history"></i>
+                        Comparing with Live Version
+                    </span>
+                    <span class="meta-divider">•</span>
+                    <span class="meta-item">
+                        <i class="fas fa-clock"></i>
+                        Submitted {{ formatDate(draft.createdAt) }}
                     </span>
                 </div>
             </div>
             <div class="hero-right">
                 <div class="funding-card">
-                    <span class="funding-label">Funding Goal</span>
-                    <span class="funding-amount">{{ formatCurrency(project.fundingGoal) }}</span>
+                    <span class="funding-label">{{ draft ? 'Proposed Goal' : 'Funding Goal' }}</span>
+                    <span class="funding-amount">{{ formatCurrency(draft ? draft.fundingGoal : (project?.fundingGoal ||
+                        0)) }}</span>
                 </div>
             </div>
         </div>
 
-        <!-- Content Grid -->
-        <div class="content-grid">
-
+        <!-- Regular Content View (No Draft) -->
+        <div class="content-grid" *ngIf="!draft">
             <!-- Main Column -->
             <div class="main-column">
-
-                <!-- Description Card -->
                 <div class="detail-card">
-                    <div class="card-header">
-                        <i class="fas fa-align-left"></i>
+                    <div class="card-header"><i class="fas fa-align-left"></i>
                         <h3>Description</h3>
                     </div>
                     <div class="card-body">
-                        <p class="description-text">{{ project.description }}</p>
+                        <p class="description-text">{{ project?.description }}</p>
                     </div>
                 </div>
-
-                <!-- Use of Funds Card -->
                 <div class="detail-card">
-                    <div class="card-header">
-                        <i class="fas fa-chart-pie"></i>
+                    <div class="card-header"><i class="fas fa-chart-pie"></i>
                         <h3>Use of Funds</h3>
                     </div>
                     <div class="card-body">
-                        <p class="funds-text">{{ project.useOfFunds }}</p>
+                        <p class="funds-text">{{ project?.useOfFunds }}</p>
                     </div>
                 </div>
-
-                <!-- Rejection Reason (only if rejected) -->
-                <div class="detail-card rejection-card" *ngIf="project.rejectionReason">
-                    <div class="card-header">
-                        <i class="fas fa-exclamation-circle"></i>
+                <div class="detail-card rejection-card" *ngIf="project?.rejectionReason">
+                    <div class="card-header"><i class="fas fa-exclamation-circle"></i>
                         <h3>Rejection Reason</h3>
                     </div>
                     <div class="card-body">
-                        <p class="rejection-text">{{ project.rejectionReason }}</p>
+                        <p class="rejection-text">{{ project?.rejectionReason }}</p>
                     </div>
                 </div>
             </div>
 
             <!-- Sidebar Column -->
             <div class="sidebar-column">
-
-                <!-- Timeline Card -->
                 <div class="detail-card timeline-card">
-                    <div class="card-header">
-                        <i class="fas fa-clock"></i>
+                    <div class="card-header"><i class="fas fa-clock"></i>
                         <h3>Timeline</h3>
                     </div>
                     <div class="card-body">
                         <div class="timeline-dates">
-                            <div class="timeline-item">
-                                <span class="timeline-label">Start Date</span>
-                                <span class="timeline-value">{{ formatDate(project.startDate) }}</span>
-                            </div>
+                            <div class="timeline-item"><span class="timeline-label">Start Date</span><span
+                                    class="timeline-value">{{ formatDate(project?.startDate || null) }}</span></div>
                             <div class="timeline-divider">
                                 <div class="timeline-progress-bar">
                                     <div class="timeline-progress-fill" [style.width.%]="getTimelineProgress()"></div>
                                 </div>
                             </div>
-                            <div class="timeline-item">
-                                <span class="timeline-label">End Date</span>
-                                <span class="timeline-value">{{ formatDate(project.endDate) }}</span>
-                            </div>
+                            <div class="timeline-item"><span class="timeline-label">End Date</span><span
+                                    class="timeline-value">{{ formatDate(project?.endDate || null) }}</span></div>
                         </div>
-                        <div class="days-remaining" *ngIf="getDaysRemaining() > 0">
+                        <div class="days-remaining" *ngIf="getDaysRemaining() > 0" style="margin-top: 1.5rem;">
                             <i class="fas fa-hourglass-half"></i>
                             <span>{{ getDaysRemaining() }} days remaining</span>
-                        </div>
-                        <div class="days-remaining ended" *ngIf="getDaysRemaining() === 0">
-                            <i class="fas fa-flag-checkered"></i>
-                            <span>Timeline completed</span>
                         </div>
                     </div>
                 </div>
@@ -194,26 +189,26 @@
                 <!-- Founder Info Card -->
                 <div class="detail-card founder-card">
                     <div class="card-header">
-                        <i class="fas fa-user"></i>
+                        <i class="fas fa-user-circle"></i>
                         <h3>Founder</h3>
                     </div>
                     <div class="card-body">
                         <div class="founder-profile">
                             <div class="founder-avatar">
-                                <img *ngIf="project.founderProfilePicture" [src]="project.founderProfilePicture"
+                                <img *ngIf="project?.founderProfilePicture" [src]="project?.founderProfilePicture"
                                     alt="Founder">
-                                <i *ngIf="!project.founderProfilePicture" class="fas fa-user-circle"></i>
+                                <i *ngIf="!project?.founderProfilePicture" class="fas fa-user"></i>
                             </div>
                             <div class="founder-info">
-                                <span class="founder-name">{{ project.founderName || '—' }}</span>
-                                <span class="founder-company">{{ project.founderCompany || '—' }}</span>
+                                <span class="founder-name">{{ project?.founderName || '—' }}</span>
+                                <span class="founder-company">{{ project?.founderCompany || 'Rafeeq Founder' }}</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Review Info Card -->
-                <div class="detail-card review-card" *ngIf="project.reviewedAt">
+                <div class="detail-card review-card" *ngIf="project?.reviewedAt">
                     <div class="card-header">
                         <i class="fas fa-clipboard-check"></i>
                         <h3>Review Info</h3>
@@ -222,17 +217,102 @@
                         <div class="review-items">
                             <div class="review-item">
                                 <span class="review-label">Reviewed By</span>
-                                <span class="review-value">{{ project.reviewedByRole || '—' }}</span>
+                                <span class="review-value">{{ project?.reviewedByRole || 'Admin' }}</span>
                             </div>
                             <div class="review-item">
                                 <span class="review-label">Reviewed At</span>
-                                <span class="review-value">{{ formatDate(project.reviewedAt) }}</span>
-                            </div>
-                            <div class="review-item" *ngIf="project.updatedAt">
-                                <span class="review-label">Last Updated</span>
-                                <span class="review-value">{{ formatDate(project.updatedAt) }}</span>
+                                <span class="review-value">{{ formatDate(project?.reviewedAt || null) }}</span>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Comparison View (If Draft exists) -->
+        <div class="comparison-container" *ngIf="draft">
+            <div class="comparison-header">
+                <span class="comparison-label">Modifications Comparison</span>
+                <div class="status-badge pending">
+                    <span class="status-dot"></span>
+                    Pending Review
+                </div>
+            </div>
+
+            <div class="comparison-grid">
+                <!-- Left Column: Modifications -->
+                <div class="comparison-column">
+                    <h3 class="column-label">Modifications (Left)</h3>
+
+                    <!-- Title -->
+                    <div class="comparison-item" [ngClass]="{'modified': draft.name !== draft.liveProject?.name}">
+                        <h4><i class="fas fa-heading"></i> Project Name <span class="diff-indicator"
+                                *ngIf="draft.name !== draft.liveProject?.name">!</span></h4>
+                        <div class="field-value">{{ draft.name }}</div>
+                    </div>
+
+                    <!-- Category -->
+                    <div class="comparison-item"
+                        [ngClass]="{'modified': draft.category !== draft.liveProject?.category}">
+                        <h4><i class="fas fa-tag"></i> Category <span class="diff-indicator"
+                                *ngIf="draft.category !== draft.liveProject?.category">!</span></h4>
+                        <div class="field-value">{{ draft.category }}</div>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="comparison-item"
+                        [ngClass]="{'modified': draft.description !== draft.liveProject?.description}">
+                        <h4><i class="fas fa-align-left"></i> Description <span class="diff-indicator"
+                                *ngIf="draft.description !== draft.liveProject?.description">!</span></h4>
+                        <div class="field-value">{{ draft.description }}</div>
+                    </div>
+
+                    <!-- Use of Funds -->
+                    <div class="comparison-item"
+                        [ngClass]="{'modified': draft.useOfFunds !== draft.liveProject?.useOfFunds}">
+                        <h4><i class="fas fa-chart-pie"></i> Use of Funds <span class="diff-indicator"
+                                *ngIf="draft.useOfFunds !== draft.liveProject?.useOfFunds">!</span></h4>
+                        <div class="field-value">{{ draft.useOfFunds }}</div>
+                    </div>
+
+                    <!-- Funding Goal -->
+                    <div class="comparison-item"
+                        [ngClass]="{'modified': draft.fundingGoal !== draft.liveProject?.fundingGoal}">
+                        <h4><i class="fas fa-dollar-sign"></i> Funding Goal <span class="diff-indicator"
+                                *ngIf="draft.fundingGoal !== draft.liveProject?.fundingGoal">!</span></h4>
+                        <div class="field-value">{{ formatCurrency(draft.fundingGoal) }}</div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Original -->
+                <div class="comparison-column">
+                    <h3 class="column-label">Original (Right)</h3>
+
+                    <div class="comparison-item">
+                        <h4>Project Name</h4>
+                        <div class="field-value">{{ draft.liveProject?.name || '—' }}</div>
+                    </div>
+
+                    <div class="comparison-item">
+                        <h4>Category</h4>
+                        <div class="field-value">{{ draft.liveProject?.category || '—' }}</div>
+                    </div>
+
+                    <div class="comparison-item">
+                        <h4>Description</h4>
+                        <div class="field-value">{{ draft.liveProject?.description || '—' }}</div>
+                    </div>
+
+                    <div class="comparison-item">
+                        <h4>Use of Funds</h4>
+                        <div class="field-value">{{ draft.liveProject?.useOfFunds || '—' }}</div>
+                    </div>
+
+                    <div class="comparison-item">
+                        <h4>Funding Goal</h4>
+                        <div class="field-value">{{ draft.liveProject ? formatCurrency(draft.liveProject.fundingGoal) :
+                            '—' }}</div>
                     </div>
                 </div>
             </div>

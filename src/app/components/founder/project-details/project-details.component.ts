@@ -1,7 +1,8 @@
 import { Component, OnInit, OnChanges, Input, Output, EventEmitter, SimpleChanges, inject } from '@angular/core';
 import { CommonModule, DatePipe, DecimalPipe } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { ProjectService, ProjectResponse } from '../../../services/project.service';
+import { ProjectService, ProjectResponse, DraftResponse } from '../../../services/project.service';
+
 import { animate, style, transition, trigger } from '@angular/animations';
 
 @Component({
@@ -28,7 +29,9 @@ import { animate, style, transition, trigger } from '@angular/animations';
 })
 export class ProjectDetailsComponent implements OnInit, OnChanges {
   @Input() projectId?: number;
+  @Input() draft?: DraftResponse | null;
   @Output() close = new EventEmitter<void>();
+
 
   private route = inject(ActivatedRoute);
   private router = inject(Router);
@@ -45,7 +48,11 @@ export class ProjectDetailsComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     // If not used as a child component, fallback to route param
-    if (!this.projectId) {
+    // If we have a draft, we use the embedded liveProject for comparison
+    if (this.draft && this.draft.liveProject) {
+      this.project = this.draft.liveProject as any;
+      this.isLoading = false;
+    } else if (!this.projectId) {
       const id = this.route.snapshot.paramMap.get('id');
       if (id) {
         this.loadProject(parseInt(id, 10));
@@ -54,13 +61,18 @@ export class ProjectDetailsComponent implements OnInit, OnChanges {
         this.isLoading = false;
       }
     }
+
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['projectId'] && this.projectId) {
+    if (changes['draft'] && this.draft && this.draft.liveProject) {
+      this.project = this.draft.liveProject as any;
+      this.isLoading = false;
+    } else if (changes['projectId'] && this.projectId) {
       this.loadProject(this.projectId);
     }
   }
+
 
   onClose(): void {
     this.close.emit();

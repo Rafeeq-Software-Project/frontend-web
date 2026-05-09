@@ -21,6 +21,13 @@ export class DraftsComponent implements OnInit, OnDestroy {
   drafts: DraftResponse[] = [];
   isLoading = true;
   selectedProjectId: number | null = null;
+  selectedDraft: DraftResponse | null = null;
+
+  openDraftDetails(draft: DraftResponse): void {
+    this.selectedDraft = draft;
+    this.selectedProjectId = draft.projectId;
+  }
+
 
   openProjectDetails(projectId: number): void {
     if (projectId > 0) {
@@ -30,7 +37,9 @@ export class DraftsComponent implements OnInit, OnDestroy {
 
   closeProjectDetails(): void {
     this.selectedProjectId = null;
+    this.selectedDraft = null;
   }
+
 
   ngOnInit(): void {
     this.projectService.refreshDrafts();

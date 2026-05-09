@@ -25,16 +25,13 @@ import { CommonModule } from '@angular/common';
     .archive-page { animation: fadeIn 0.4s ease-out; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     .page-header { margin-bottom: 40px; }
-    .page-header h1 { font-size: 2rem; font-weight: 800; color: #1e293b; margin-bottom: 8px; }
-    :host-context(.dark-mode) .page-header h1 { color: #f8fafc; }
-    .page-header p { color: #64748b; font-size: 1.125rem; }
-    .card { background: #ffffff; border-radius: 24px; border: 1px solid #e2e8f0; padding: 80px 40px; text-align: center; }
-    :host-context(.dark-mode) .card { background: #1e293b; border-color: #334155; }
-    .placeholder-content i { font-size: 4rem; color: #cbd5e1; margin-bottom: 24px; }
-    :host-context(.dark-mode) .placeholder-content i { color: #475569; }
-    .placeholder-content h2 { font-size: 1.5rem; font-weight: 700; color: #1e293b; margin-bottom: 12px; }
-    :host-context(.dark-mode) .placeholder-content h2 { color: #f8fafc; }
-    .placeholder-content p { color: #64748b; font-size: 1.125rem; }
+    .page-header h1 { font-size: 2rem; font-weight: 800; color: var(--text-primary); margin-bottom: 8px; }
+    .page-header p { color: var(--text-tertiary); font-size: 1.125rem; }
+    .card { background: var(--bg-surface); border-radius: var(--radius-xl); border: 1px solid var(--border-base); padding: 80px 40px; text-align: center; box-shadow: var(--shadow-sm); }
+    .placeholder-content i { font-size: 4rem; color: var(--text-muted); margin-bottom: 24px; opacity: 0.5; }
+    .placeholder-content h2 { font-size: 1.5rem; font-weight: 700; color: var(--text-primary); margin-bottom: 12px; }
+    .placeholder-content p { color: var(--text-tertiary); font-size: 1.125rem; }
+
   `]
 })
 export class ArchiveComponent {}

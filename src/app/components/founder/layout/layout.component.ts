@@ -1,4 +1,5 @@
-import { Component, OnInit, OnDestroy, Inject, PLATFORM_ID, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, Inject, PLATFORM_ID, inject, HostListener } from '@angular/core';
+
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { ThemeService } from '../../../services/theme.service';
@@ -54,7 +55,19 @@ export class FounderLayoutComponent implements OnInit, OnDestroy {
     this.isSidebarOpen = !this.isSidebarOpen;
   }
 
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    if (isPlatformBrowser(this.platformId)) {
+      if (window.innerWidth < 1024 && this.isSidebarOpen) {
+        this.isSidebarOpen = false;
+      } else if (window.innerWidth >= 1024 && !this.isSidebarOpen) {
+        this.isSidebarOpen = true;
+      }
+    }
+  }
+
   logout(): void {
     this.authService.logout();
   }
 }
+

@@ -3,30 +3,11 @@
 :host {
   --sidebar-width: 280px;
   --header-height: 80px;
-  --primary: #3b82f6;
-  --primary-glow: rgba(59, 130, 246, 0.4);
-  --secondary: #8b5cf6;
-  --accent: #10b981;
-  --danger: #ef4444;
-  --warning: #f59e0b;
-  --bg-main: #f8fafc;
-  --text-main: #1e293b;
-  --text-muted: #64748b;
-  --glass: rgba(255, 255, 255, 0.7);
-  --glass-border: rgba(255, 255, 255, 0.5);
-  --shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05);
-  --radius-xl: 24px;
-  --transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition: var(--transition-base);
 }
 
-:host-context(.dark-mode) {
-  --bg-main: #020617;
-  --text-main: #f1f5f9;
-  --text-muted: #94a3b8;
-  --glass: rgba(15, 23, 42, 0.6);
-  --glass-border: rgba(255, 255, 255, 0.05);
-  --shadow: 0 10px 40px -15px rgba(0, 0, 0, 0.4);
-}
+
+
 
 /* Animations */
 @keyframes slideInRight {
@@ -85,8 +66,8 @@
 .dashboard-wrapper {
   display: flex;
   min-height: 100vh;
-  background: var(--bg-main);
-  color: var(--text-main);
+  background: var(--bg-body);
+  color: var(--text-primary);
   font-family: 'Outfit', sans-serif;
   overflow: hidden;
   position: relative;
@@ -95,10 +76,8 @@
 /* Sidebar */
 .sidebar {
   width: var(--sidebar-width);
-  background: var(--glass);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-right: 1px solid var(--glass-border);
+  background: var(--bg-surface);
+  border-right: 1px solid var(--border-base);
   display: flex;
   flex-direction: column;
   padding: 30px 20px;
@@ -119,7 +98,7 @@
 .logo-circle {
   width: 40px;
   height: 40px;
-  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  background: linear-gradient(135deg, var(--primary), var(--secondary, #8b5cf6));
   border-radius: 12px;
   display: flex;
   align-items: center;
@@ -127,7 +106,7 @@
   color: white;
   font-weight: 800;
   font-size: 20px;
-  box-shadow: 0 10px 20px -5px var(--primary-glow);
+  box-shadow: var(--shadow-md);
 }
 
 .brand-name {
@@ -135,11 +114,12 @@
   font-weight: 800;
   letter-spacing: -0.5px;
   margin: 0;
+  color: var(--text-primary);
 }
 
 .brand-tagline {
   font-size: 11px;
-  color: var(--text-muted);
+  color: var(--text-tertiary);
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -158,7 +138,7 @@
   gap: 14px;
   padding: 14px 18px;
   border-radius: 16px;
-  color: var(--text-muted);
+  color: var(--text-tertiary);
   text-decoration: none;
   font-weight: 600;
   transition: var(--transition);
@@ -166,13 +146,8 @@
   overflow: hidden;
 }
 
-.nav-item i {
-  font-size: 18px;
-  width: 24px;
-}
-
 .nav-item:hover {
-  background: rgba(59, 130, 246, 0.05);
+  background: var(--primary-soft);
   color: var(--primary);
   transform: translateX(5px);
 }
@@ -180,7 +155,7 @@
 .nav-item.active {
   background: var(--primary);
   color: white;
-  box-shadow: 0 10px 25px -10px var(--primary-glow);
+  box-shadow: var(--shadow-md);
 }
 
 .nav-item.active::after {
@@ -224,10 +199,8 @@
 /* Top Header */
 .top-header {
   height: var(--header-height);
-  background: var(--glass);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border-bottom: 1px solid var(--glass-border);
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border-base);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -241,28 +214,30 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  background: var(--bg-main);
-  border: 1px solid var(--glass-border);
-  padding: 10px 20px;
+}
+
+.form-control {
+  background: var(--bg-body);
+  border: 1px solid var(--border-base);
+  padding: 14px 18px;
   border-radius: 14px;
-  width: 350px;
+  color: var(--text-primary);
+  font-family: inherit;
+  font-weight: 500;
   transition: var(--transition);
 }
 
-.search-bar:focus-within {
+.form-control:focus {
   border-color: var(--primary);
-  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
-}
-
-.search-bar i {
-  color: var(--text-muted);
+  box-shadow: 0 0 0 4px var(--primary-soft);
+  outline: none;
 }
 
 .search-bar input {
   background: none;
   border: none;
   font-weight: 500;
-  color: var(--text-main);
+  color: var(--text-primary);
   outline: none;
   width: 100%;
 }
@@ -277,9 +252,9 @@
   width: 44px;
   height: 44px;
   border-radius: 12px;
-  border: 1px solid var(--glass-border);
-  background: var(--glass);
-  color: var(--text-main);
+  border: 1px solid var(--border-base);
+  background: var(--bg-surface);
+  color: var(--text-primary);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -427,29 +402,27 @@
 }
 
 .summary-card {
-  background: var(--glass);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid var(--glass-border);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-base);
   padding: 30px;
   border-radius: var(--radius-xl);
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-sm);
   display: flex;
   flex-direction: column;
   position: relative;
   transition: var(--transition);
-  animation: scaleIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 .summary-card:hover {
   transform: translateY(-8px);
   border-color: var(--primary);
+  box-shadow: var(--shadow-md);
 }
 
 .card-icon-wrap {
   width: 48px;
   height: 48px;
-  background: var(--primary-light, rgba(59, 130, 246, 0.1));
+  background: var(--primary-soft);
   border-radius: 12px;
   display: flex;
   align-items: center;
@@ -467,15 +440,15 @@
 }
 
 .card-value {
-
   font-size: 36px;
   font-weight: 800;
   margin: 10px 0 5px 0;
   letter-spacing: -1px;
+  color: var(--text-primary);
 }
 
 .card-label {
-  color: var(--text-muted);
+  color: var(--text-tertiary);
   font-weight: 600;
   font-size: 14px;
 }
@@ -521,12 +494,11 @@
 
 /* Recent Projects Section */
 .recent-projects {
-  background: var(--glass);
-  border: 1px solid var(--glass-border);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-base);
   border-radius: var(--radius-xl);
   padding: 30px;
-  box-shadow: var(--shadow);
-  animation: slideInUp 0.8s ease-out 0.2s both;
+  box-shadow: var(--shadow-sm);
 }
 
 .section-header {
@@ -540,6 +512,7 @@
   font-size: 20px;
   font-weight: 800;
   margin: 0;
+  color: var(--text-primary);
 }
 
 .view-all {
@@ -574,22 +547,19 @@
   text-transform: uppercase;
   letter-spacing: 1px;
   padding: 15px;
-  border-bottom: 1px solid var(--glass-border);
+  border-bottom: 1px solid var(--border-soft);
 }
 
 .projects-table td {
   padding: 20px 15px;
   font-weight: 600;
   font-size: 14px;
-  border-bottom: 1px solid var(--glass-border);
-}
-
-.projects-table tr:last-child td {
-  border-bottom: none;
+  border-bottom: 1px solid var(--border-soft);
+  color: var(--text-secondary);
 }
 
 .projects-table tr:hover {
-  background: rgba(59, 130, 246, 0.02);
+  background: var(--bg-surface-soft);
 }
 
 .projects-table td img {
@@ -610,27 +580,23 @@
 
 .status-yellow {
   background: var(--warning);
-  box-shadow: 0 0 10px var(--warning);
 }
 
 .status-green {
-  background: var(--accent);
-  box-shadow: 0 0 10px var(--accent);
+  background: var(--success);
 }
 
 .status-blue {
   background: var(--primary);
-  box-shadow: 0 0 10px var(--primary);
 }
 
 /* No Drafts */
 .no-drafts {
   text-align: center;
   padding: 60px;
-  background: var(--glass);
-  border: 1px dashed var(--glass-border);
+  background: var(--bg-surface);
+  border: 1px dashed var(--border-base);
   border-radius: var(--radius-xl);
-  animation: slideInUp 0.8s ease-out 0.4s both;
 }
 
 .no-drafts img {
@@ -652,13 +618,12 @@
 
 /* Dashboard Sidebar Cards */
 .side-card {
-  background: var(--glass);
-  border: 1px solid var(--glass-border);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-base);
   border-radius: var(--radius-xl);
   padding: 30px;
   margin-bottom: 30px;
-  box-shadow: var(--shadow);
-  animation: slideInRight 0.8s ease-out 0.3s both;
+  box-shadow: var(--shadow-sm);
 }
 
 .side-card-cta {
@@ -735,12 +700,13 @@
 .btn-message {
   padding: 6px 14px;
   border-radius: 10px;
-  border: 1px solid var(--glass-border);
-  background: var(--bg-main);
+  border: 1px solid var(--border-base);
+  background: var(--bg-body);
   font-size: 12px;
   font-weight: 700;
   cursor: pointer;
   margin-left: auto;
+  color: var(--text-primary);
 }
 
 .view-connections {
@@ -758,9 +724,8 @@
   display: none;
   height: 70px;
   padding: 0 20px;
-  background: var(--glass);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid var(--glass-border);
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border-base);
   align-items: center;
   gap: 15px;
   position: sticky;

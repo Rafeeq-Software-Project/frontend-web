@@ -31,21 +31,27 @@ export interface ProjectResponse extends ProjectRequest {
 export interface DraftLiveProject {
   id: number;
   name: string;
-  status: string;
+  description: string;
+  category: string;
   fundingGoal: number;
+  useOfFunds: string;
+  startDate: string;
+  endDate: string;
+  status: string;
+  raised?: number;
 }
 
-export interface DraftResponse {
+export interface DraftResponse extends ProjectRequest {
   id: number;
   projectId: number;
   founderId: number;
-  name: string;
   status: string;
   createdAt: string;
   rejectionReason: string | null;
   reviewedByRole: string | null;
-  liveProject: DraftLiveProject;
+  liveProject: DraftLiveProject | null;
 }
+
 
 @Injectable({
   providedIn: 'root'

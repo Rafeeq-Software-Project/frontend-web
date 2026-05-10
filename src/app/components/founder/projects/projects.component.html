@@ -18,17 +18,21 @@
                 All Projects
                 <span class="count-badge">{{ getProjectCount('all') }}</span>
             </button>
-            <button class="filter-tab" [ngClass]="{'active': currentFilter === 'pending'}" (click)="setFilter('pending')">
+            <button class="filter-tab" [ngClass]="{'active': currentFilter === 'pending'}"
+                (click)="setFilter('pending')">
                 <i class="fas fa-clock"></i>
                 Binding
                 <span class="count-badge">{{ getProjectCount('pending') }}</span>
             </button>
-            <button class="filter-tab" [ngClass]="{'active': currentFilter === 'approved'}" (click)="setFilter('approved')">
+            <button class="filter-tab" [ngClass]="{'active': currentFilter === 'approved'}"
+                (click)="setFilter('approved')">
                 <i class="fas fa-check-circle"></i>
                 Accepted
                 <span class="count-badge">{{ getProjectCount('approved') }}</span>
             </button>
-            <div class="filter-indicator" [style.transform]="'translateX(' + (currentFilter === 'all' ? 0 : (currentFilter === 'pending' ? 100 : 200)) + '%)'"></div>
+            <div class="filter-indicator"
+                [style.transform]="'translateX(' + (currentFilter === 'all' ? 0 : (currentFilter === 'pending' ? 100 : 200)) + '%)'">
+            </div>
 
         </div>
 
@@ -50,18 +54,17 @@
             </div>
             <h2>No projects yet</h2>
             <p>Ready to bring your vision to life? Create your first project to start connecting with investors.</p>
-            <button class="create-btn" routerLink="/founder/projects/create" style="margin: 0 auto;">Get Started</button>
+            <button class="create-btn" routerLink="/founder/projects/create" style="margin: 0 auto;">Get
+                Started</button>
         </div>
 
 
         <!-- Projects Grid -->
         <div class="grid-layout" *ngIf="projects.length > 0 && !isLoading">
-            <div class="project-card" *ngFor="let project of filteredProjects; let i = index" [ngClass]="{'new-project-card': project.isNew}"
-
-                [style.animation-delay]="(i * 0.08) + 's'"
+            <div class="project-card" *ngFor="let project of filteredProjects; let i = index"
+                [ngClass]="{'new-project-card': project.isNew}" [style.animation-delay]="(i * 0.08) + 's'"
                 [routerLink]="project.isNew ? '/founder/projects/create' : null"
-                (click)="!project.isNew ? openProjectDetails(project.id) : null"
-                style="cursor: pointer;">
+                (click)="!project.isNew ? openProjectDetails(project.id) : null" style="cursor: pointer;">
 
                 <!-- Standard Project Card Content -->
                 <ng-container *ngIf="!project.isNew">
@@ -91,7 +94,8 @@
                                 <span class="meter-pct">{{ project.progress }}%</span>
                             </div>
                             <div class="meter-track">
-                                <div class="meter-fill" [style.width.%]="project.progress" [ngClass]="project.status"></div>
+                                <div class="meter-fill" [style.width.%]="project.progress" [ngClass]="project.status">
+                                </div>
                             </div>
                             <div class="meter-amounts">
                                 <span class="raised">${{ project.raised | number:'1.0-0' }} raised</span>
@@ -125,4 +129,5 @@
     </div>
 </div>
 
-<app-project-details *ngIf="selectedProjectId" [projectId]="selectedProjectId" (close)="closeProjectDetails()"></app-project-details>
+<app-project-details *ngIf="selectedProjectId" [projectId]="selectedProjectId"
+    (close)="closeProjectDetails()"></app-project-details>

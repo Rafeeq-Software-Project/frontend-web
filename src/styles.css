@@ -144,46 +144,6 @@ body {
     z-index: 1;
 }
 
-/* Global Morphing Theme Toggle Styles */
-.theme-icon-wrapper {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.theme-icon-wrapper svg {
-    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.theme-icon-wrapper.dark svg {
-    transform: rotate(40deg);
-}
-
-.sun-main {
-    transition: r 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.theme-icon-wrapper.dark .sun-main {
-    r: 9;
-}
-
-.moon-mask-circle {
-    transition: cx 0.5s cubic-bezier(0.4, 0, 0.2, 1), cy 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.theme-icon-wrapper.dark .moon-mask-circle {
-    cx: 17;
-    cy: 9;
-}
-
-.sun-rays {
-    transition: opacity 0.3s ease, transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.theme-icon-wrapper.dark .sun-rays {
-    opacity: 0;
-    transform: scale(0.6);
-}
 
 .dashboard-wrapper {
     background-color: var(--dash-bg);

@@ -7,6 +7,7 @@
         opacity: 0;
         transform: translateY(10px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -224,11 +225,25 @@
     height: 6px;
 }
 
-.card-accent.approved { background: var(--success); }
-.card-accent.pending { background: var(--warning); }
-.card-accent.rejected { background: var(--danger); }
-.card-accent.draft { background: var(--text-muted); }
-.card-accent.open { background: var(--primary); }
+.card-accent.approved {
+    background: var(--success);
+}
+
+.card-accent.pending {
+    background: var(--warning);
+}
+
+.card-accent.rejected {
+    background: var(--danger);
+}
+
+.card-accent.draft {
+    background: var(--text-muted);
+}
+
+.card-accent.open {
+    background: var(--primary);
+}
 
 .card-body {
     padding: 24px;
@@ -265,24 +280,64 @@
 }
 
 @keyframes statusPulse {
-    0%, 100% { transform: scale(1); opacity: 1; }
-    50% { transform: scale(1.4); opacity: 0.5; }
+
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    50% {
+        transform: scale(1.4);
+        opacity: 0.5;
+    }
 }
 
-.status-badge.approved { background: var(--success-soft); color: var(--success); }
-.status-badge.approved .status-dot { background: var(--success); }
+.status-badge.approved {
+    background: var(--success-soft);
+    color: var(--success);
+}
 
-.status-badge.pending { background: var(--warning-soft); color: var(--warning); }
-.status-badge.pending .status-dot { background: var(--warning); }
+.status-badge.approved .status-dot {
+    background: var(--success);
+}
 
-.status-badge.rejected { background: var(--danger-soft); color: var(--danger); }
-.status-badge.rejected .status-dot { background: var(--danger); }
+.status-badge.pending {
+    background: var(--warning-soft);
+    color: var(--warning);
+}
 
-.status-badge.draft { background: var(--bg-surface-soft); color: var(--text-tertiary); }
-.status-badge.draft .status-dot { background: var(--text-muted); animation: none; }
+.status-badge.pending .status-dot {
+    background: var(--warning);
+}
 
-.status-badge.open { background: var(--primary-soft); color: var(--primary); }
-.status-badge.open .status-dot { background: var(--primary); }
+.status-badge.rejected {
+    background: var(--danger-soft);
+    color: var(--danger);
+}
+
+.status-badge.rejected .status-dot {
+    background: var(--danger);
+}
+
+.status-badge.draft {
+    background: var(--bg-surface-soft);
+    color: var(--text-tertiary);
+}
+
+.status-badge.draft .status-dot {
+    background: var(--text-muted);
+    animation: none;
+}
+
+.status-badge.open {
+    background: var(--primary-soft);
+    color: var(--primary);
+}
+
+.status-badge.open .status-dot {
+    background: var(--primary);
+}
 
 .category-chip {
     font-size: 11px;
@@ -370,11 +425,25 @@
     transition: width 1.2s ease;
 }
 
-.meter-fill.approved { background: var(--success); }
-.meter-fill.pending { background: var(--warning); }
-.meter-fill.rejected { background: var(--danger); }
-.meter-fill.draft { background: var(--text-muted); }
-.meter-fill.open { background: var(--primary); }
+.meter-fill.approved {
+    background: var(--success);
+}
+
+.meter-fill.pending {
+    background: var(--warning);
+}
+
+.meter-fill.rejected {
+    background: var(--danger);
+}
+
+.meter-fill.draft {
+    background: var(--text-muted);
+}
+
+.meter-fill.open {
+    background: var(--primary);
+}
 
 .meter-fill::after {
     content: '';
@@ -385,8 +454,13 @@
 }
 
 @keyframes shimmer {
-    0% { transform: translateX(-100%); }
-    100% { transform: translateX(200%); }
+    0% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(200%);
+    }
 }
 
 .meter-amounts {
@@ -511,7 +585,9 @@
 }
 
 @keyframes loaderSpin {
-    to { transform: rotate(360deg); }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 @media (max-width: 768px) {
@@ -521,7 +597,7 @@
         gap: 1.5rem;
         margin-bottom: 2rem;
     }
-    
+
     .page-header h1 {
         font-size: 1.75rem;
     }
@@ -540,11 +616,12 @@
     .page-header h1 {
         font-size: 1.5rem;
     }
-    
+
     .card-title {
         font-size: 18px;
     }
 }
+
 .empty-state i {
     font-size: 28px;
     color: var(--primary);
